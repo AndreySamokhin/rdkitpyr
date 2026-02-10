@@ -144,12 +144,9 @@ GetPythonInfo <- function(verbose = TRUE) {
 #' @noRd
 #==============================================================================#
 .LoadPythonHelpers <- function() {
-  py_files <- c("inchi_and_smiles.py", "smarts.py")
-  for (py_file in py_files) {
-    path <- system.file("python", py_file, package = "rdkit8r")
-    normalized_path <- normalizePath(path, mustWork = TRUE)
-    reticulate::source_python(normalized_path, convert = FALSE)
-  }
+  path <- system.file("python", "inchi_and_smiles.py", package = "rdkitpyr")
+  normalized_path <- normalizePath(path, mustWork = TRUE)
+  reticulate::source_python(normalized_path, convert = FALSE)
   return(invisible(NULL))
 }
 
