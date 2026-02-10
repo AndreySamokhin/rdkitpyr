@@ -10,6 +10,7 @@ Description: A task-oriented R interface to the RDKit Python library via
     functionality, including molecule parsing, transformation, and descriptor
     calculation, without mirroring RDKit's native API structure.
 License: MIT + file LICENSE
+BugReports: https://github.com/AndreySamokhin/rdkitpyr/issues
 Encoding: UTF-8
 LazyData: true
 Suggests: 
