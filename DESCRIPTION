@@ -13,6 +13,9 @@ License: MIT + file LICENSE
 BugReports: https://github.com/AndreySamokhin/rdkitpyr/issues
 Encoding: UTF-8
 LazyData: true
+Imports:
+    reticulate,
+    utils
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
