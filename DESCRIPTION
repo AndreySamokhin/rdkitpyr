@@ -10,8 +10,13 @@ Description: A task-oriented R interface to the RDKit Python library via
     functionality, including molecule parsing, transformation, and descriptor
     calculation, without mirroring RDKit's native API structure.
 License: MIT + file LICENSE
+BugReports: https://github.com/AndreySamokhin/rdkitpyr/issues
 Encoding: UTF-8
 LazyData: true
+Imports:
+    reticulate,
+    utils
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+RoxygenNote: 7.3.3
