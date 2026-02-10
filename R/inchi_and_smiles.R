@@ -33,12 +33,14 @@
 #'   inchi <- c("InChI=1S/C2H6/c1-2/h1-2H3",
 #'              "InChI=1S/C6H6/c1-2-4-6-5-3-1/h1-6H")
 #'   ConvertToSmiles(inchi)
-#'   #> [1] "CC"       "c1ccccc1"
+#'   #> "CC"
+#'   #> "c1ccccc1"
 #'
 #'   # Convert a vector of SMILES to SMILES with Kekulized aromatic bonds
 #'   smiles <- c("c1ccccc1", "c1ccc2ccccc2c1")
 #'   ConvertToSmiles(smiles, kekule = TRUE)
-#'   #> [1] "C1=CC=CC=C1"         "C1=CC=C2C=CC=CC2=C1"
+#'   #> "C1=CC=CC=C1"
+#'   #> "C1=CC=C2C=CC=CC2=C1"
 #'
 #' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
@@ -150,7 +152,8 @@ ConvertToSmiles <- function(mols,
 #'   # Convert a vector of SMILES to InChI identifiers
 #'   smiles <- c("CC", "CCC")
 #'   ConvertToInchi(smiles)
-#'   #> [1] "InChI=1S/C2H6/c1-2/h1-2H3"       "InChI=1S/C3H8/c1-3-2/h3H2,1-2H3"
+#'   #> "InChI=1S/C2H6/c1-2/h1-2H3"
+#'   #> "InChI=1S/C3H8/c1-3-2/h3H2,1-2H3"
 #'
 #'   # Providing InChI as input returns identical output
 #'   ConvertToInchi("InChI=1S/CH4/h1H4")
@@ -221,12 +224,14 @@ ConvertToInchi <- function(mols) {
 #'   inchi <- c("InChI=1S/C2H6/c1-2/h1-2H3",
 #'              "InChI=1S/C6H6/c1-2-4-6-5-3-1/h1-6H")
 #'   ConvertToInchikey(inchi)
-#'   #> [1] "OTMSDBZUPAUEDD-UHFFFAOYSA-N" "UHOVQNZJYSORNB-UHFFFAOYSA-N"
+#'   #> "OTMSDBZUPAUEDD-UHFFFAOYSA-N"
+#'   #> "UHOVQNZJYSORNB-UHFFFAOYSA-N"
 #'
 #'   # Convert a vector of SMILES to InChIKey identifiers
 #'   smiles <- c("CC", "c1ccccc1")
 #'   ConvertToInchikey(smiles)
-#'   #> [1] "OTMSDBZUPAUEDD-UHFFFAOYSA-N" "UHOVQNZJYSORNB-UHFFFAOYSA-N"
+#'   #> "OTMSDBZUPAUEDD-UHFFFAOYSA-N"
+#'   #> "UHOVQNZJYSORNB-UHFFFAOYSA-N"
 #'
 #'
 #' @importFrom reticulate py
