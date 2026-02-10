@@ -144,7 +144,7 @@ GetPythonInfo <- function(verbose = TRUE) {
 #' @noRd
 #==============================================================================#
 .LoadPythonHelpers <- function() {
-  path <- system.file("python", "inchi_and_smiles.py", package = "rdkitpyr")
+  path <- system.file("python", "molecule_io.py", package = "rdkitpyr")
   normalized_path <- normalizePath(path, mustWork = TRUE)
   reticulate::source_python(normalized_path, convert = FALSE)
   return(invisible(NULL))
