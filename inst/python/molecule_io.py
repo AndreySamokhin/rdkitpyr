@@ -1,87 +1,177 @@
 from rdkit import Chem
+from rdkit import rdBase
+from typing import Sequence, Optional
 
 
-def convert_inchi_to_smiles(inchi_list, **kwargs):
-    # **kwargs - Additional keyword arguments passed to Chem.MolToSmiles()
-    #            (e.g., isomericSmiles=True, kekuleSmiles=False, canonical=True)
+def convert_to_molecules(
+    molecule_strings: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
+    sanitize: bool = True,
+    removeHs: bool = True,
+    replacements: Optional[dict] = None,
+    verbose: bool = False,
+):
     out = []
-    for inchi in inchi_list:
-        try:
-            mol = Chem.MolFromInchi(inchi)
-            if mol is None:
+    if not verbose:
+        rdBase.DisableLog("rdApp.*")
+    try:
+        if isinstance(molecule_strings, str):
+            molecule_strings = [molecule_strings]
+        if len(molecule_strings) == 0:
+            return []
+
+        for molecule in molecule_strings:
+            if isinstance(molecule, str):
+                if molecule.startswith("InChI="):
+                    mol = Chem.MolFromInchi(
+                        molecule, sanitize=sanitize, removeHs=removeHs
+                    )
+                else:
+                    if replacements is None:
+                        replacements = {}
+                    mol = Chem.MolFromSmiles(
+                        molecule, sanitize=sanitize, replacements=replacements
+                    )
+                out.append(mol)
+            elif isinstance(molecule, Chem.Mol):
+                out.append(molecule)
+            else:
+                out.append(None)
+    finally:
+        if not verbose:
+            rdBase.EnableLog("rdApp.*")
+    return out
+
+
+def convert_to_smiles(
+    molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
+    sanitize: bool = True,
+    removeHs: bool = True,
+    replacements: Optional[dict] = None,
+    isomericSmiles: bool = True,
+    kekuleSmiles: bool = False,
+    rootedAtAtom: int = -1,
+    canonical: bool = True,
+    allBondsExplicit: bool = False,
+    allHsExplicit: bool = False,
+    doRandom: bool = False,
+    ignoreAtomMapNumbers: bool = False,
+    verbose: bool = False,
+):
+    out = []
+
+    if not verbose:
+        rdBase.DisableLog("rdApp.*")
+    try:
+
+        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
+            molecule_list = [molecule_list]
+        if len(molecule_list) == 0:
+            return []
+        molecules = convert_to_molecules(
+            molecule_list,
+            sanitize=sanitize,
+            removeHs=removeHs,
+            replacements=replacements,
+            verbose=verbose,
+        )
+        for molecule in molecules:
+            if molecule is None:
                 out.append(None)
             else:
-                out.append(Chem.MolToSmiles(mol, **kwargs))
-        except:
-            out.append(None)
+                out.append(
+                    Chem.MolToSmiles(
+                        molecule,
+                        isomericSmiles=isomericSmiles,
+                        kekuleSmiles=kekuleSmiles,
+                        rootedAtAtom=rootedAtAtom,
+                        canonical=canonical,
+                        allBondsExplicit=allBondsExplicit,
+                        allHsExplicit=allHsExplicit,
+                        doRandom=doRandom,
+                        ignoreAtomMapNumbers=ignoreAtomMapNumbers,
+                    )
+                )
+    finally:
+        if not verbose:
+            rdBase.EnableLog("rdApp.*")
     return out
 
 
-def convert_inchi_to_inchikey(inchi_list):
+def convert_to_inchi(
+    molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
+    sanitize: bool = True,
+    removeHs: bool = True,
+    replacements: Optional[dict] = None,
+    verbose: bool = False,
+):
     out = []
-    for inchi in inchi_list:
-        try:
-            out.append(Chem.InchiToInchiKey(inchi))
-        except:
-            out.append(None)
-    return out
 
+    if not verbose:
+        rdBase.DisableLog("rdApp.*")
+    try:
 
-def convert_inchi_to_inchi(inchi_list):
-    out = []
-    for inchi in inchi_list:
-        try:
-            mol = Chem.MolFromInchi(inchi)
-            if mol is None:
+        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
+            molecule_list = [molecule_list]
+        if len(molecule_list) == 0:
+            return []
+        molecules = convert_to_molecules(
+            molecule_list,
+            sanitize=sanitize,
+            removeHs=removeHs,
+            replacements=replacements,
+            verbose=verbose,
+        )
+        for molecule in molecules:
+            if molecule is None:
                 out.append(None)
             else:
-                out.append(Chem.MolToInchi(mol))
-        except:
-            out.append(None)
+                out.append(
+                    Chem.MolToInchi(
+                        molecule,
+                    )
+                )
+    finally:
+        if not verbose:
+            rdBase.EnableLog("rdApp.*")
     return out
 
 
-def convert_smiles_to_inchi(smiles_list):
+def convert_to_inchikey(
+    molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
+    sanitize: bool = True,
+    replacements: Optional[dict] = None,
+    verbose: bool = False,
+):
     out = []
-    for smi in smiles_list:
-        try:
-            mol = Chem.MolFromSmiles(smi)
-            if mol is None:
-                out.append(None)
+
+    if not verbose:
+        rdBase.DisableLog("rdApp.*")
+    try:
+
+        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
+            molecule_list = [molecule_list]
+        if len(molecule_list) == 0:
+            return []
+        for molecule in molecule_list:
+            if isinstance(molecule, str):
+                if molecule.startswith("InChI="):
+                    out.append(Chem.InchiToInchiKey(molecule))
+                else:
+                    if replacements is None:
+                        replacements = {}
+                    mol = Chem.MolFromSmiles(
+                        molecule, sanitize=sanitize, replacements=replacements
+                    )
+                    if mol is not None:
+                        inchikey = Chem.MolToInchiKey(mol)
+                        out.append(inchikey)
+                    else:
+                        out.append(None)
+            elif isinstance(molecule, Chem.Mol):
+                out.append(Chem.MolToInchiKey(molecule))
             else:
-                out.append(Chem.MolToInchi(mol))
-        except:
-            out.append(None)
-    return out
-
-
-def convert_smiles_to_inchikey(smiles_list):
-    out = []
-    for smi in smiles_list:
-        try:
-            mol = Chem.MolFromSmiles(smi)
-            if mol is None:
                 out.append(None)
-            else:
-                inchi = Chem.MolToInchi(mol)
-                out.append(Chem.InchiToInchiKey(inchi))
-        except:
-            out.append(None)
+    finally:
+        if not verbose:
+            rdBase.EnableLog("rdApp.*")
     return out
-
-
-def convert_smiles_to_smiles(smiles_list, **kwargs):
-    # **kwargs - Additional keyword arguments passed to Chem.MolToSmiles()
-    #            (e.g., isomericSmiles=True, kekuleSmiles=False, canonical=True)
-    out = []
-    for smiles in smiles_list:
-        try:
-            mol = Chem.MolFromSmiles(smiles)
-            if mol is None:
-                out.append(None)
-            else:
-                out.append(Chem.MolToSmiles(mol, **kwargs))
-        except:
-            out.append(None)
-    return out
-    
