@@ -98,26 +98,14 @@ ConvertToSmiles <- function(mols,
   # A single element R vector is converted to a Python scalar. To overcome this
   # behavior R vectors are represented as lists explicitly.
 
-  if (mol_input_type == "inchi") {
-    py_obj <- reticulate::py$convert_inchi_to_smiles(
-      as.list(mols),
-      isomericSmiles = isomeric,
-      kekuleSmiles = kekule,
-      allBondsExplicit = explicit_bonds,
-      allHsExplicit = explicit_hydrogens,
-      canonical = canonical
-    )
-  } else { # i.e., 'mol_input_type == "smiles"'
-    py_obj <- reticulate::py$convert_smiles_to_smiles(
-      as.list(mols),
-      isomericSmiles = isomeric,
-      kekuleSmiles = kekule,
-      allBondsExplicit = explicit_bonds,
-      allHsExplicit = explicit_hydrogens,
-      canonical = canonical
-    )
-  }
-
+  py_obj <- reticulate::py$convert_to_smiles(
+    as.list(mols),
+    isomericSmiles = isomeric,
+    kekuleSmiles = kekule,
+    allBondsExplicit = explicit_bonds,
+    allHsExplicit = explicit_hydrogens,
+    canonical = canonical
+  )
   smiles <- vapply(reticulate::py_to_r(py_obj), function(a1) {
     if(is.null(a1)) {
       return(NA_character_)
@@ -185,11 +173,7 @@ ConvertToInchi <- function(mols) {
   # A single element R vector is converted to a Python scalar. To overcome this
   # behavior R vectors are represented as lists explicitly.
 
-  if (mol_input_type == "inchi") {
-    py_obj <- reticulate::py$convert_inchi_to_inchi(as.list(mols))
-  } else { # i.e., 'mol_input_type == "smiles"'
-    py_obj <- reticulate::py$convert_smiles_to_inchi(as.list(mols))
-  }
+  py_obj <- reticulate::py$convert_to_inchi(as.list(mols))
   inchi <- vapply(reticulate::py_to_r(py_obj), function(a1) {
     if(is.null(a1)) {
       return(NA_character_)
@@ -259,11 +243,7 @@ ConvertToInchikey <- function(mols) {
   # A single element R vector is converted to a Python scalar. To overcome this
   # behavior R vectors are represented as lists explicitly.
 
-  if (mol_input_type == "inchi") {
-    py_obj <- reticulate::py$convert_inchi_to_inchikey(as.list(mols))
-  } else { # i.e., 'mol_input_type == "smiles"'
-    py_obj <- reticulate::py$convert_smiles_to_inchikey(as.list(mols))
-  }
+  py_obj <- reticulate::py$convert_to_inchikey(as.list(mols))
   inchikey <- vapply(reticulate::py_to_r(py_obj), function(a1) {
     if(is.null(a1)) {
       return(NA_character_)
