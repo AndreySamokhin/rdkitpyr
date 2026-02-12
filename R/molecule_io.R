@@ -1,18 +1,72 @@
 #==============================================================================#
+#' Parse SMILES and InChI strings into RDKit Mol objects
+#'
+#' @description
+#'   Parse SMILES and InChI strings into RDKit Mol objects
+#'
+#'   This function converts a character vector of molecular representations
+#'   (SMILES or InChI) into a list of RDKit Mol objects (Python-backed pointers
+#'   via \code{reticulate}). The resulting objects can be reused in subsequent
+#'   operations without repeated conversion from SMILES or InChI. This is
+#'   particularly useful when multiple chemoinformatics tasks are performed on
+#'   the same set of molecules, improving efficiency by avoiding repeated
+#'   parsing steps.
+#'
+#' @param mols
+#'   A character vector of SMILES or InChI strings.
+#' @param verbose
+#'   A logical value. If \code{TRUE}, display warning and error messages emitted
+#'   by the RDKit backend. Default is \code{FALSE}.
+#'
+#' @return
+#'   A list of RDKit Mol objects.
+#'
+#' @examples
+#'   # Convert a vector of SMILES to RDKit Mol objects
+#'   mols <- ParseMolecules(c("CC", "CCC"))
+#'   print(mols[[1L]])
+#'   #> <rdkit.Chem.rdchem.Mol object at 0x000001CC4D60F4C0>
+#'
+#'   # Convert a list of RDKit Mol objects to InChI identifiers
+#'   ConvertToInchi(mols)
+#'   #> "InChI=1S/C2H6/c1-2/h1-2H3"
+#'   #> "InChI=1S/C3H8/c1-3-2/h3H2,1-2H3"
+#'
+#' @importFrom reticulate py
+#'
+#' @export
+#==============================================================================#
+ParseMolecules <- function(mols,
+                           verbose = FALSE) {
+  .EnsurePythonReady()
+  if (!is.character(mols) || length(mols) == 0L) {
+    stop("'mols' must be a character vector of SMILES or InChI strings.")
+  }
+  if (!is.logical(verbose) || length(verbose) != 1L) {
+    stop("'verbose' must be a logical value.")
+  }
+  return(reticulate::py$convert_to_molecules(as.list(mols)))
+}
+
+
+
+#==============================================================================#
 #' Convert molecular representations to SMILES strings
 #'
 #' @description
 #'   Convert molecular representations to SMILES strings.
 #'
-#'   The input must be a character vector of either SMILES or InChI identifiers;
-#'   mixing the two in the same vector is not allowed.
+#'   The input must be a character vector of SMILES or InChI strings,
+#'   or a list of RDKit Mol objects.
 #'
-#'   SMILES inputs can also be used to transform their representation, for
-#'   example, to canonical SMILES or to include stereochemistry.
+#'   When SMILES strings are provided as input, their representation can
+#'   be transformed, for example, to canonical SMILES or with stereochemistry
+#'   omitted.
 #'
+#' @inheritParams ParseMolecules
 #' @param mols
-#'   A character vector. Molecular representation, this can be SMILES or InChI
-#'   strings. All elements must be of the same type.
+#'   A character vector of SMILES or InChI strings, or a list of RDKit
+#'   Mol objects.
 #' @param isomeric
 #'   A logical value. If \code{TRUE}, include stereochemistry in the output.
 #' @param kekule
@@ -52,19 +106,21 @@ ConvertToSmiles <- function(mols,
                             kekule = FALSE,
                             explicit_bonds = FALSE,
                             explicit_hydrogens = FALSE,
-                            canonical = TRUE) {
-
-  #--[ Pre-processing ]---------------------------------------------------------
+                            canonical = TRUE,
+                            verbose = FALSE) {
 
   .EnsurePythonReady()
-  mol_input_type <- .InferMolInputType(mols[1L])
 
 
   #--[ Check input arguments ]--------------------------------------------------
 
   # 'mols'
-  if (is.na(mol_input_type)) {
-    stop("'mols' must be a vector of SMILES or InChI identifiers.")
+  if ((!is.character(mols) || length(mols) == 0L) &&
+      (!is.list(mols) || length(mols) == 0L ||
+       (!is.null(mols[[1L]]) &&
+        !inherits(mols[[1L]], "rdkit.Chem.rdchem.Mol")))) {
+    stop("'mols' must be a character vector (SMILES or InChI) ",
+         "or a list of RDKit Mol objects.")
   }
 
   # 'isomeric'
@@ -92,32 +148,25 @@ ConvertToSmiles <- function(mols,
     stop("'canonical' must be a logical value.")
   }
 
+  # 'verbose'
+  if (!is.logical(verbose) || length(verbose) != 1L) {
+    stop("'verbose' must be a logical value.")
+  }
+
 
   #--[ Convert to SMILES ]------------------------------------------------------
 
   # A single element R vector is converted to a Python scalar. To overcome this
   # behavior R vectors are represented as lists explicitly.
 
-  if (mol_input_type == "inchi") {
-    py_obj <- reticulate::py$convert_inchi_to_smiles(
-      as.list(mols),
-      isomericSmiles = isomeric,
-      kekuleSmiles = kekule,
-      allBondsExplicit = explicit_bonds,
-      allHsExplicit = explicit_hydrogens,
-      canonical = canonical
-    )
-  } else { # i.e., 'mol_input_type == "smiles"'
-    py_obj <- reticulate::py$convert_smiles_to_smiles(
-      as.list(mols),
-      isomericSmiles = isomeric,
-      kekuleSmiles = kekule,
-      allBondsExplicit = explicit_bonds,
-      allHsExplicit = explicit_hydrogens,
-      canonical = canonical
-    )
-  }
-
+  py_obj <- reticulate::py$convert_to_smiles(
+    as.list(mols),
+    isomericSmiles = isomeric,
+    kekuleSmiles = kekule,
+    allBondsExplicit = explicit_bonds,
+    allHsExplicit = explicit_hydrogens,
+    canonical = canonical
+  )
   smiles <- vapply(reticulate::py_to_r(py_obj), function(a1) {
     if(is.null(a1)) {
       return(NA_character_)
@@ -140,9 +189,10 @@ ConvertToSmiles <- function(mols,
 #'   output is expected to be identical to the input. This can be useful to test
 #'   RDKit's consistency with challenging molecules.
 #'
+#' @inheritParams ParseMolecules
 #' @param mols
-#'   A character vector. Molecular representation, this can be SMILES or InChI
-#'   strings. All elements must be of the same type.
+#'   A character vector of SMILES or InChI strings, or a list of RDKit
+#'   Mol objects.
 #'
 #' @return
 #'   A character vector. InChI strings. Elements that cannot be converted are
@@ -159,24 +209,31 @@ ConvertToSmiles <- function(mols,
 #'   ConvertToInchi("InChI=1S/CH4/h1H4")
 #'   #> "InChI=1S/CH4/h1H4"
 #'
-#'
 #' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
 #==============================================================================#
-ConvertToInchi <- function(mols) {
-
-  #--[ Pre-processing ]---------------------------------------------------------
+ConvertToInchi <- function(mols,
+                           verbose = FALSE) {
 
   .EnsurePythonReady()
-  mol_input_type <- .InferMolInputType(mols[1L])
 
 
   #--[ Check input arguments ]--------------------------------------------------
 
-  if (is.na(mol_input_type)) {
-    stop("'mols' must be a vector of SMILES or InChI identifiers.")
+  # 'mols'
+  if ((!is.character(mols) || length(mols) == 0L) &&
+      (!is.list(mols) || length(mols) == 0L ||
+       (!is.null(mols[[1L]]) &&
+        !inherits(mols[[1L]], "rdkit.Chem.rdchem.Mol")))) {
+    stop("'mols' must be a character vector (SMILES or InChI) ",
+         "or a list of RDKit Mol objects.")
+  }
+
+  # 'verbose'
+  if (!is.logical(verbose) || length(verbose) != 1L) {
+    stop("'verbose' must be a logical value.")
   }
 
 
@@ -185,11 +242,7 @@ ConvertToInchi <- function(mols) {
   # A single element R vector is converted to a Python scalar. To overcome this
   # behavior R vectors are represented as lists explicitly.
 
-  if (mol_input_type == "inchi") {
-    py_obj <- reticulate::py$convert_inchi_to_inchi(as.list(mols))
-  } else { # i.e., 'mol_input_type == "smiles"'
-    py_obj <- reticulate::py$convert_smiles_to_inchi(as.list(mols))
-  }
+  py_obj <- reticulate::py$convert_to_inchi(as.list(mols), verbose = verbose)
   inchi <- vapply(reticulate::py_to_r(py_obj), function(a1) {
     if(is.null(a1)) {
       return(NA_character_)
@@ -208,12 +261,13 @@ ConvertToInchi <- function(mols) {
 #' @description
 #'   Convert molecular representations to InChIKey strings.
 #'
-#'   The input must be a character vector of either SMILES or InChI identifiers;
-#'   mixing the two in the same vector is not allowed.
+#'   The input must be a character vector of SMILES or InChI strings,
+#'   or a list of RDKit Mol objects.
 #'
+#' @inheritParams ParseMolecules
 #' @param mols
-#'   A character vector. Molecular representation, this can be SMILES or InChI
-#'   strings. All elements must be of the same type.
+#'   A character vector of SMILES or InChI strings, or a list of RDKit
+#'   Mol objects.
 #'
 #' @return
 #'   A character vector. InChIKey strings. Elements that cannot be converted are
@@ -233,24 +287,31 @@ ConvertToInchi <- function(mols) {
 #'   #> "OTMSDBZUPAUEDD-UHFFFAOYSA-N"
 #'   #> "UHOVQNZJYSORNB-UHFFFAOYSA-N"
 #'
-#'
 #' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
 #==============================================================================#
-ConvertToInchikey <- function(mols) {
-
-  #--[ Pre-processing ]---------------------------------------------------------
+ConvertToInchikey <- function(mols,
+                              verbose = FALSE) {
 
   .EnsurePythonReady()
-  mol_input_type <- .InferMolInputType(mols[1L])
 
 
   #--[ Check input arguments ]--------------------------------------------------
 
-  if (is.na(mol_input_type)) {
-    stop("'mols' must be a vector of SMILES or InChI identifiers.")
+  # 'mols'
+  if ((!is.character(mols) || length(mols) == 0L) &&
+      (!is.list(mols) || length(mols) == 0L ||
+       (!is.null(mols[[1L]]) &&
+        !inherits(mols[[1L]], "rdkit.Chem.rdchem.Mol")))) {
+    stop("'mols' must be a character vector (SMILES or InChI) ",
+         "or a list of RDKit Mol objects.")
+  }
+
+  # 'verbose'
+  if (!is.logical(verbose) || length(verbose) != 1L) {
+    stop("'verbose' must be a logical value.")
   }
 
 
@@ -259,11 +320,7 @@ ConvertToInchikey <- function(mols) {
   # A single element R vector is converted to a Python scalar. To overcome this
   # behavior R vectors are represented as lists explicitly.
 
-  if (mol_input_type == "inchi") {
-    py_obj <- reticulate::py$convert_inchi_to_inchikey(as.list(mols))
-  } else { # i.e., 'mol_input_type == "smiles"'
-    py_obj <- reticulate::py$convert_smiles_to_inchikey(as.list(mols))
-  }
+  py_obj <- reticulate::py$convert_to_inchikey(as.list(mols))
   inchikey <- vapply(reticulate::py_to_r(py_obj), function(a1) {
     if(is.null(a1)) {
       return(NA_character_)

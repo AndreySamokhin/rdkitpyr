@@ -10,12 +10,13 @@ ConvertToSmiles(
   kekule = FALSE,
   explicit_bonds = FALSE,
   explicit_hydrogens = FALSE,
-  canonical = TRUE
+  canonical = TRUE,
+  verbose = FALSE
 )
 }
 \arguments{
-\item{mols}{A character vector. Molecular representation, this can be SMILES or InChI
-strings. All elements must be of the same type.}
+\item{mols}{A character vector of SMILES or InChI strings, or a list of RDKit
+Mol objects.}
 
 \item{isomeric}{A logical value. If \code{TRUE}, include stereochemistry in the output.}
 
@@ -26,6 +27,9 @@ strings. All elements must be of the same type.}
 \item{explicit_hydrogens}{A logical value. If \code{TRUE}, make all hydrogens explicit.}
 
 \item{canonical}{A logical value. If \code{TRUE}, generate canonical SMILES.}
+
+\item{verbose}{A logical value. If \code{TRUE}, display warning and error messages emitted
+by the RDKit backend. Default is \code{FALSE}.}
 }
 \value{
 A character vector. SMILES strings. Elements that cannot be converted are
@@ -34,11 +38,12 @@ A character vector. SMILES strings. Elements that cannot be converted are
 \description{
 Convert molecular representations to SMILES strings.
 
-  The input must be a character vector of either SMILES or InChI identifiers;
-  mixing the two in the same vector is not allowed.
+  The input must be a character vector of SMILES or InChI strings,
+  or a list of RDKit Mol objects.
 
-  SMILES inputs can also be used to transform their representation, for
-  example, to canonical SMILES or to include stereochemistry.
+  When SMILES strings are provided as input, their representation can
+  be transformed, for example, to canonical SMILES or with stereochemistry
+  omitted.
 }
 \examples{
   # Convert a vector of InChI identifiers to canonical SMILES

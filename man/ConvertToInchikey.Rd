@@ -4,11 +4,14 @@
 \alias{ConvertToInchikey}
 \title{Convert molecular representations to InChIKey strings}
 \usage{
-ConvertToInchikey(mols)
+ConvertToInchikey(mols, verbose = FALSE)
 }
 \arguments{
-\item{mols}{A character vector. Molecular representation, this can be SMILES or InChI
-strings. All elements must be of the same type.}
+\item{mols}{A character vector of SMILES or InChI strings, or a list of RDKit
+Mol objects.}
+
+\item{verbose}{A logical value. If \code{TRUE}, display warning and error messages emitted
+by the RDKit backend. Default is \code{FALSE}.}
 }
 \value{
 A character vector. InChIKey strings. Elements that cannot be converted are
@@ -17,8 +20,8 @@ A character vector. InChIKey strings. Elements that cannot be converted are
 \description{
 Convert molecular representations to InChIKey strings.
 
-  The input must be a character vector of either SMILES or InChI identifiers;
-  mixing the two in the same vector is not allowed.
+  The input must be a character vector of SMILES or InChI strings,
+  or a list of RDKit Mol objects.
 }
 \examples{
   # Convert a vector of InChI to InChIKey identifiers
@@ -33,6 +36,5 @@ Convert molecular representations to InChIKey strings.
   ConvertToInchikey(smiles)
   #> "OTMSDBZUPAUEDD-UHFFFAOYSA-N"
   #> "UHOVQNZJYSORNB-UHFFFAOYSA-N"
-
 
 }
