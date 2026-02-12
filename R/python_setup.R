@@ -21,8 +21,7 @@
 #'     \code{py_require()}.}
 #'   }
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf reticulate::py_module_available("rdkit")
 #'   # Print information about the Python environment
 #'   GetPythonInfo()
 #'
@@ -30,7 +29,6 @@
 #'   py_env <- GetPythonInfo(verbose = FALSE)
 #'   py_env$python_version
 #'   py_env$rdkit_version
-#' }
 #'
 #' @export
 #==============================================================================#
