@@ -1,3 +1,14 @@
+test_that("ParseMolecules()", {
+  mols <- ParseMolecules(c("C_???", "C"))
+  expect_true(is.null(mols[[1L]]))
+  expect_true(inherits(mols[[2L]], "rdkit.Chem.rdchem.Mol"))
+  expect_identical(
+    ConvertToSmiles(mols),
+    c(NA_character_, "C")
+  )
+})
+
+
 test_that("ConvertToSmiles(), convert InChI to SMILES", {
   expect_identical(
     ConvertToSmiles(test_compounds$inchi),
