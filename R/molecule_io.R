@@ -62,7 +62,9 @@ ConvertToSmiles <- function(mols,
 
   # 'mols'
   if ((!is.character(mols) || length(mols) == 0L) &&
-      (!is.list(mols) || !inherits(mols[[1L]], "rdkit.Chem.rdchem.Mol"))) {
+      (!is.list(mols) || length(mols) == 0L ||
+       (!is.null(mols[[1L]]) &&
+        !inherits(mols[[1L]], "rdkit.Chem.rdchem.Mol")))) {
     stop("'mols' must be a character vector (SMILES or InChI) ",
          "or a list of RDKit Mol objects.")
   }
@@ -160,7 +162,9 @@ ConvertToInchi <- function(mols) {
   #--[ Check input arguments ]--------------------------------------------------
 
   if ((!is.character(mols) || length(mols) == 0L) &&
-      (!is.list(mols) || !inherits(mols[[1L]], "rdkit.Chem.rdchem.Mol"))) {
+      (!is.list(mols) || length(mols) == 0L ||
+       (!is.null(mols[[1L]]) &&
+        !inherits(mols[[1L]], "rdkit.Chem.rdchem.Mol")))) {
     stop("'mols' must be a character vector (SMILES or InChI) ",
          "or a list of RDKit Mol objects.")
   }
@@ -228,7 +232,9 @@ ConvertToInchikey <- function(mols) {
   #--[ Check input arguments ]--------------------------------------------------
 
   if ((!is.character(mols) || length(mols) == 0L) &&
-      (!is.list(mols) || !inherits(mols[[1L]], "rdkit.Chem.rdchem.Mol"))) {
+      (!is.list(mols) || length(mols) == 0L ||
+       (!is.null(mols[[1L]]) &&
+        !inherits(mols[[1L]], "rdkit.Chem.rdchem.Mol")))) {
     stop("'mols' must be a character vector (SMILES or InChI) ",
          "or a list of RDKit Mol objects.")
   }
