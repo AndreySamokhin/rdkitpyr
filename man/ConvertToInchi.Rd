@@ -4,11 +4,14 @@
 \alias{ConvertToInchi}
 \title{Convert molecular representations to InChI strings}
 \usage{
-ConvertToInchi(mols)
+ConvertToInchi(mols, verbose = FALSE)
 }
 \arguments{
-\item{mols}{A character vector. Molecular representation, this can be SMILES or InChI
-strings. All elements must be of the same type.}
+\item{mols}{A character vector of SMILES or InChI strings, or a list of RDKit
+Mol objects.}
+
+\item{verbose}{A logical value. If \code{TRUE}, display warning and error messages emitted
+by the RDKit backend. Default is \code{FALSE}.}
 }
 \value{
 A character vector. InChI strings. Elements that cannot be converted are
@@ -31,6 +34,5 @@ Convert molecular representations to InChI strings.
   # Providing InChI as input returns identical output
   ConvertToInchi("InChI=1S/CH4/h1H4")
   #> "InChI=1S/CH4/h1H4"
-
 
 }
