@@ -255,3 +255,48 @@ ConvertToInchikey <- function(mols) {
 }
 
 
+
+#==============================================================================#
+#' Parse SMILES and InChI strings into RDKit Mol objects
+#'
+#' @description
+#'   Parse SMILES and InChI strings into RDKit Mol objects
+#'
+#'   This function converts a character vector of molecular representations
+#'   (SMILES or InChI) into a list of RDKit Mol objects (Python-backed pointers
+#'   via \code{reticulate}). The resulting objects can be reused in subsequent
+#'   operations without repeated conversion from SMILES or InChI. This is
+#'   particularly useful when multiple chemoinformatics tasks are performed on
+#'   the same set of molecules, improving efficiency by avoiding repeated
+#'   parsing steps.
+#'
+#' @param mols
+#'   A character vector of SMILES or InChI strings.
+#'
+#' @return
+#'   A list of RDKit Mol objects.
+#'
+#' @examples
+#'   # Convert a vector of SMILES to RDKit Mol objects
+#'   mols <- ParseMolecules(c("CC", "CCC"))
+#'   print(mols[[1L]])
+#'   #> <rdkit.Chem.rdchem.Mol object at 0x000001CC4D60F4C0>
+#'
+#'   # Convert a list of RDKit Mol objects to InChI identifiers
+#'   ConvertToInchi(mols)
+#'   #> "InChI=1S/C2H6/c1-2/h1-2H3"
+#'   #> "InChI=1S/C3H8/c1-3-2/h3H2,1-2H3"
+#'
+#' @importFrom reticulate py
+#'
+#' @export
+#==============================================================================#
+ParseMolecules <- function(mols) {
+  .EnsurePythonReady()
+  if (!is.character(mols) || length(mols) == 0L) {
+    stop("'mols' must be a character vector of SMILES or InChI strings.")
+  }
+  return(reticulate::py$convert_to_molecules(as.list(mols)))
+}
+
+
