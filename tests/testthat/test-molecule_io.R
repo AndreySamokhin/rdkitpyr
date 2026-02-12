@@ -1,4 +1,5 @@
 test_that("ParseMolecules()", {
+  SkipIfNoRdkit()
   mols <- ParseMolecules(c("C???", "C"))
   expect_true(is.null(mols[[1L]]))
   expect_true(inherits(mols[[2L]], "rdkit.Chem.rdchem.Mol"))
@@ -10,6 +11,7 @@ test_that("ParseMolecules()", {
 
 
 test_that("ConvertToSmiles(), convert InChI to SMILES", {
+  SkipIfNoRdkit()
   expect_identical(
     ConvertToSmiles(test_compounds$inchi),
     test_compounds$smiles
@@ -21,6 +23,7 @@ test_that("ConvertToSmiles(), convert InChI to SMILES", {
 
 
 test_that("ConvertToSmiles(), convert SMILES to SMILES", {
+  SkipIfNoRdkit()
   expect_identical(
     ConvertToSmiles(c("OCCC", "CC(=O)C", "c1cc(O)ccc1", "c1c(C)c(O)ccc1")),
     c("CCCO", "CC(C)=O", "Oc1ccccc1", "Cc1ccccc1O")
@@ -47,12 +50,14 @@ test_that("ConvertToSmiles(), convert SMILES to SMILES", {
 
 
 test_that("ConvertToInchi(), convert InChI to InChI", {
+  SkipIfNoRdkit()
   expect_identical(ConvertToInchi("InChI=1S/CH4/h1H4"), "InChI=1S/CH4/h1H4")
   expect_identical(ConvertToInchi("InChI=???"), NA_character_)
 })
 
 
 test_that("ConvertToInchi(), convert SMILES to InChI", {
+  SkipIfNoRdkit()
   expect_identical(
     ConvertToInchi(test_compounds$smiles),
     test_compounds$inchi
@@ -64,6 +69,7 @@ test_that("ConvertToInchi(), convert SMILES to InChI", {
 
 
 test_that("ConvertToInchikey(), convert InChI to InChIKey", {
+  SkipIfNoRdkit()
   expect_identical(
     ConvertToInchikey(test_compounds$inchi),
     test_compounds$inchikey
@@ -78,6 +84,7 @@ test_that("ConvertToInchikey(), convert InChI to InChIKey", {
 
 
 test_that("ConvertToInchikey(), convert SMILES to InChIKey", {
+  SkipIfNoRdkit()
   expect_identical(
     ConvertToInchikey(test_compounds$smiles),
     test_compounds$inchikey
