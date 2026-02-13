@@ -1,5 +1,5 @@
 SkipIfNoRdkit <- function() {
-  if (!reticulate::py_module_available("rdkit")) {
+  if (!.IsRdkitAvailable()) {
     skip("'rdkit' not available for testing.")
   }
 }

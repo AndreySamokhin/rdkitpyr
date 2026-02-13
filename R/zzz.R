@@ -12,6 +12,7 @@
     )
   )
   the$python_ready <- FALSE
+  the$rdkit_available <- NA
 
   py_packages <- character(0L)
   for (py_pkg_name in names(the$py_requirements$packages)) {
