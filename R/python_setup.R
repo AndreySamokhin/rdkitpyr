@@ -21,7 +21,7 @@
 #'     \code{py_require()}.}
 #'   }
 #'
-#' @examplesIf rdkitpyr:::.IsRdkitAvailable()
+#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
 #'   # Print information about the Python environment
 #'   GetPythonInfo()
 #'
@@ -58,26 +58,28 @@ GetPythonInfo <- function(verbose = TRUE) {
 #' Check whether RDKit is available
 #'
 #' @description
-#'   Internal helper that checks whether the Python module \code{rdkit} is
-#'   available via \pkg{reticulate}.
+#'   Internal helper used in examples and tests to determine whether the
+#'   Python module \code{rdkit} is available via \pkg{reticulate}.
 #'
-#'   The result is cached within the package environment to avoid repeated
-#'   Python initialization and module import attempts.
-#'
-#'   This function is intended for use in package tests and examples to
-#'   conditionally skip execution when RDKit is not installed.
+#'   The result is cached for the duration of the R session to avoid repeated
+#'   calls to \code{reticulate::py_module_available()}.
 #'
 #' @return
-#'   A logical scalar. Return \code{TRUE} if RDKit is available in the current
-#'   Python environment and \code{FALSE} otherwise.
+#'   A logical value indicating whether the \code{rdkit} Python module is
+#'   available.
 #'
+#' @importFrom reticulate py_available
 #' @importFrom reticulate py_module_available
 #' @noRd
 #==============================================================================#
-.IsRdkitAvailable <- function() {
-  if (is.na(the$rdkit_available)) {
-    the$rdkit_available <- reticulate::py_module_available("rdkit")
+.IsRdkitAvailable <- function(initialize = TRUE) {
+  if (!is.na(the$rdkit_available)) {
+    return(the$rdkit_available)
   }
+  if (!initialize && !reticulate::py_available(initialize = FALSE)) {
+    return(FALSE)
+  }
+  the$rdkit_available <- reticulate::py_module_available("rdkit")
   return(the$rdkit_available)
 }
 

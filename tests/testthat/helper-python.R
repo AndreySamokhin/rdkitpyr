@@ -1,5 +1,5 @@
 SkipIfNoRdkit <- function() {
-  if (!.IsRdkitAvailable()) {
+  if (!.IsRdkitAvailable(initialize = TRUE)) {
     skip("'rdkit' not available for testing.")
   }
 }
