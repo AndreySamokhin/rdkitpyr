@@ -7,4 +7,4 @@ the$py_info <- list(python_path    = NULL,
                     rdkit_version  = NULL,
                     forced_by      = NULL)
 the$py_ready <- FALSE
-
+the$rdkit_available <- NA

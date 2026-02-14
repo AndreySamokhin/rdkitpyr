@@ -27,7 +27,7 @@ Get details about the Python interpreter, \code{numpy} and \code{rdkit}
   packages.
 }
 \examples{
-\dontrun{
+\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Print information about the Python environment
   GetPythonInfo()
 
@@ -35,6 +35,5 @@ Get details about the Python interpreter, \code{numpy} and \code{rdkit}
   py_env <- GetPythonInfo(verbose = FALSE)
   py_env$python_version
   py_env$rdkit_version
-}
-
+\dontshow{\}) # examplesIf}
 }

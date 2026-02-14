@@ -24,6 +24,7 @@ Convert molecular representations to InChIKey strings.
   or a list of RDKit Mol objects.
 }
 \examples{
+\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Convert a vector of InChI to InChIKey identifiers
   inchi <- c("InChI=1S/C2H6/c1-2/h1-2H3",
              "InChI=1S/C6H6/c1-2-4-6-5-3-1/h1-6H")
@@ -36,5 +37,5 @@ Convert molecular representations to InChIKey strings.
   ConvertToInchikey(smiles)
   #> "OTMSDBZUPAUEDD-UHFFFAOYSA-N"
   #> "UHOVQNZJYSORNB-UHFFFAOYSA-N"
-
+\dontshow{\}) # examplesIf}
 }

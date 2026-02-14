@@ -27,6 +27,7 @@ Parse SMILES and InChI strings into RDKit Mol objects
   parsing steps.
 }
 \examples{
+\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Convert a vector of SMILES to RDKit Mol objects
   mols <- ParseMolecules(c("CC", "CCC"))
   print(mols[[1L]])
@@ -36,5 +37,5 @@ Parse SMILES and InChI strings into RDKit Mol objects
   ConvertToInchi(mols)
   #> "InChI=1S/C2H6/c1-2/h1-2H3"
   #> "InChI=1S/C3H8/c1-3-2/h3H2,1-2H3"
-
+\dontshow{\}) # examplesIf}
 }
