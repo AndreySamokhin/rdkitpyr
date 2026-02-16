@@ -21,7 +21,7 @@
 #'   # Calculate exact mass for a set of molecules
 #'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
 #'   CalculateExactMass(smiles)
-#'   #> 46.069 78.114 NA
+#'   #> 46.04186 78.04695 NA
 #'
 #' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
