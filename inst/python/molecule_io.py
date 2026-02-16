@@ -1,6 +1,5 @@
-from rdkit import Chem
-from rdkit import rdBase
-from typing import Sequence, Optional
+from typing import Optional, Sequence
+from rdkit import Chem, rdBase
 
 
 def convert_to_molecules(
