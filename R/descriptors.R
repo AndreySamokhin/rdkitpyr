@@ -57,14 +57,14 @@ CalculateExactMass <- function(mols,
     as.list(mols),
     verbose = verbose
   )
-  exact_masses <- vapply(reticulate::py_to_r(py_obj), function(a1) {
+  exact_mass <- vapply(reticulate::py_to_r(py_obj), function(a1) {
     if(is.null(a1)) {
       return(NA_real_)
     } else {
       return(a1)
     }
   }, numeric(1L), USE.NAMES = FALSE)
-  return(exact_masses)
+  return(exact_mass)
 }
 
 
