@@ -33,3 +33,61 @@ def calculate_maccs_fps(
     return out
 
 
+
+def calculate_rdkit_fps(
+    molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
+    minPath: int = 1,
+    maxPath: int = 7,
+    fpSize: int = 2048,
+    nBitsPerHash: int = 2,
+    useHs: bool = True,
+    tgtDensity: float = 0.0,
+    minSize: int = 128,
+    branchedPaths: bool = True,
+    useBondOrder: bool = True,
+    verbose: bool = False,
+):
+    # TODO: The 'RDKFingerprint()' function contains some additional arguments:
+    #   - atomInvariants
+    #   - fromAtoms
+    #   - atomBits
+    #   - bitInfo
+    
+    out = []
+
+    if not verbose:
+        rdBase.DisableLog("rdApp.*")
+    try:
+        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
+            molecule_list = [molecule_list]
+        if len(molecule_list) == 0:
+            return []
+        molecules = convert_to_molecules(
+            molecule_list,
+            verbose=verbose,
+            
+        )
+        for molecule in molecules:
+            if molecule is None:
+                out.append(None)
+            else:
+                # https://rdkit.org/docs/source/rdkit.Chem.rdmolops.html
+                fp = rdmolops.RDKFingerprint(
+                    molecule,
+                    minPath=minPath,
+                    maxPath=maxPath,
+                    fpSize=fpSize,
+                    nBitsPerHash=nBitsPerHash,
+                    useHs=useHs,
+                    tgtDensity=tgtDensity,
+                    minSize=minSize,
+                    branchedPaths=branchedPaths,
+                    useBondOrder=useBondOrder
+                )
+                out.append(list(fp))
+    finally:
+        if not verbose:
+            rdBase.EnableLog("rdApp.*")
+    return out
+
+
