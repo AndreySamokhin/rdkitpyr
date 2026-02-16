@@ -33,3 +33,22 @@ test_that("CalculateRdkitFingerprints()", {
   ))
 })
 
+
+test_that("CalculateMorganFingerprints()", {
+  skip_on_cran() # RDKit (Python module) is unlikely available on CRAN machines
+  SkipIfNoRdkit()
+  fps <- CalculateMorganFingerprints(c("C", "C???"), fp_size = 128L)
+  expect_true(is.integer(fps))
+  expect_true(is.matrix(fps))
+  expect_identical(ncol(fps), 128L)
+  expect_identical(nrow(fps), 2L)
+  expect_true(all(fps[1L, ] %in% c(0L, 1L)))
+  expect_true(all(is.na(fps[2L, ])))
+  expect_identical(attr(fps, "valid"), !is.na(fps[, 1L]))
+  expect_no_error(CalculateMorganFingerprints(
+    c("C", "CC", "CCC"),
+    radius = 3.0,
+    fp_size = 128.0
+  ))
+})
+

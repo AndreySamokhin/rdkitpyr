@@ -91,3 +91,57 @@ def calculate_rdkit_fps(
     return out
 
 
+
+def calculate_morgan_fps(
+    molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
+    radius: int = 3,
+    fpSize: int = 2048,
+    countSimulation: bool = False,
+    includeChirality: bool = False,
+    useBondTypes: bool = True,
+    includeRingMembership: bool = True,
+    verbose: bool = False,
+):
+    # TODO: The 'GetMorganGenerator()' function contains some additional
+    # arguments:
+    #   - onlyNonzeroInvariants
+    #   - countBounds
+    #   - atomInvariantsGenerator
+    #   - bondInvariantsGenerator
+    #   - includeRedundantEnvironments
+  
+    out = []
+
+    if not verbose:
+        rdBase.DisableLog("rdApp.*")
+    try:
+        generator = rdFingerprintGenerator.GetMorganGenerator(
+            radius=radius,
+            fpSize=fpSize,
+            countSimulation=countSimulation,
+            includeChirality=includeChirality,
+            useBondTypes=useBondTypes,
+            includeRingMembership=includeRingMembership
+        )
+        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
+            molecule_list = [molecule_list]
+        if len(molecule_list) == 0:
+            return []
+        molecules = convert_to_molecules(
+            molecule_list,
+            verbose=verbose,
+            
+        )
+        for molecule in molecules:
+            if molecule is None:
+                out.append(None)
+            else:
+                # https://rdkit.org/docs/source/rdkit.Chem.rdFingerprintGenerator.html
+                fp = generator.GetFingerprint(molecule)
+                out.append(list(fp))
+    finally:
+        if not verbose:
+            rdBase.EnableLog("rdApp.*")
+    return out
+
+
