@@ -7,7 +7,7 @@
 #'   the presence or absence of predefined structural features.
 #'
 #'   The fingerprints are calculated using the \code{GetMACCSKeysFingerprint()}
-#'   function from the \code{rdMolDescriptors} module in RDKit.
+#'   function from the \code{rdkit.Chem.rdMolDescriptors} module in RDKit.
 #'
 #'   Invalid molecules are represented by \code{NA} vectors. Row order is
 #'   preserved so that the output aligns with the input.
@@ -93,7 +93,7 @@ CalculateMaccsFingerprints <- function(mols,
 #'   into a fixed-length bit vector.
 #'
 #'   The fingerprints are calculated using the \code{RDKFingerprint()} function
-#'   from the \code{rdmolops} module in RDKit.
+#'   from the \code{rdkit.Chem.rdmolops} module in RDKit.
 #'
 #'   Invalid molecules are represented by \code{NA} vectors. Row order is
 #'   preserved so that the output aligns with the input.
@@ -272,7 +272,7 @@ CalculateRdkitFingerprints <- function(mols,
 #'   substructures are hashed into a fixed-length bit vector.
 #'
 #'   The fingerprints are calculated using the \code{GetMorganGenerator()}
-#'   function from the \code{rdFingerprintGenerator} module in RDKit.
+#'   function from the \code{rdkit.Chem.rdFingerprintGenerator} module in RDKit.
 #'
 #'   Invalid molecules are represented by \code{NA} vectors. Row order is
 #'   preserved so that the output aligns with the input.

@@ -6,7 +6,7 @@
 #'   molecules.
 #'
 #'   The descriptors are calculated using the \code{CalcMolDescriptors()}
-#'   function from the \code{Descriptors} module in RDKit.
+#'   function from the \code{rdkit.Chem.Descriptors} module in RDKit.
 #'
 #'   The set of returned descriptors may depend on the installed RDKit version.
 #'
@@ -104,7 +104,7 @@ CalculateAllDescriptors <- function(mols,
 #'   Exact mass is computed based on the most abundant isotopes of each element.
 #'
 #'   The calculation is performed using the \code{ExactMolWt()} function from
-#'   the \code{Descriptors} module in RDKit.
+#'   the \code{rdkit.Chem.Descriptors} module in RDKit.
 #'
 #' @param mols
 #'   A character vector of SMILES or InChI strings, or a list of RDKit
@@ -170,7 +170,7 @@ CalculateExactMass <- function(mols,
 #'   each element.
 #'
 #'   The calculation is performed using the \code{MolWt()} function from the
-#'   \code{Descriptors} module in RDKit.
+#'   \code{rdkit.Chem.Descriptors} module in RDKit.
 #'
 #' @param mols
 #'   A character vector of SMILES or InChI strings, or a list of RDKit
