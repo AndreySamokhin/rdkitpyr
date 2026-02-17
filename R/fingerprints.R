@@ -38,7 +38,6 @@
 #'   attr(fps, "valid")
 #'   #> TRUE TRUE FALSE
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -71,7 +70,7 @@ CalculateMaccsFingerprints <- function(mols,
   # https://rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html
   # rdkit.Chem.MACCSkeys.GenMACCSKeys()
 
-  py_obj <- reticulate::py$calculate_maccs_fps(
+  py_obj <- the$py_module$calculate_maccs_fps(
     as.list(mols),
     verbose = verbose
   )
@@ -146,7 +145,6 @@ CalculateMaccsFingerprints <- function(mols,
 #'   attr(fps, "valid")
 #'   #> TRUE TRUE FALSE
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -243,7 +241,7 @@ CalculateRdkitFingerprints <- function(mols,
 
   # rdkit.Chem.rdmolops.RDKFingerprint()
   # https://rdkit.org/docs/source/rdkit.Chem.rdmolops.html
-  py_obj <- reticulate::py$calculate_rdkit_fps(
+  py_obj <- the$py_module$calculate_rdkit_fps(
     as.list(mols),
     minPath = as.integer(min_path),
     maxPath = as.integer(max_path),
@@ -320,7 +318,6 @@ CalculateRdkitFingerprints <- function(mols,
 #'   attr(fps, "valid")
 #'   #> TRUE TRUE FALSE
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -399,7 +396,7 @@ CalculateMorganFingerprints <- function(mols,
 
   # rdkit.Chem.rdFingerprintGenerator.GetMorganGenerator()
   # https://rdkit.org/docs/source/rdkit.Chem.rdFingerprintGenerator.html
-  py_obj <- reticulate::py$calculate_morgan_fps(
+  py_obj <- the$py_module$calculate_morgan_fps(
     as.list(mols),
     radius = as.integer(radius),
     fpSize = as.integer(fp_size),

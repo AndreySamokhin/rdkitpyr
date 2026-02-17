@@ -32,7 +32,7 @@
 #'   #> "InChI=1S/C2H6/c1-2/h1-2H3"
 #'   #> "InChI=1S/C3H8/c1-3-2/h3H2,1-2H3"
 #'
-#' @importFrom reticulate py
+#' @importFrom reticulate py_to_r
 #'
 #' @export
 #==============================================================================#
@@ -45,7 +45,8 @@ ParseMolecules <- function(mols,
   if (!is.logical(verbose) || length(verbose) != 1L) {
     stop("'verbose' must be a logical value.")
   }
-  return(reticulate::py$convert_to_molecules(as.list(mols)))
+  py_obj <- the$py_module$convert_to_molecules(as.list(mols))
+  return(reticulate::py_to_r(py_obj))
 }
 
 
@@ -96,7 +97,6 @@ ParseMolecules <- function(mols,
 #'   #> "C1=CC=CC=C1"
 #'   #> "C1=CC=C2C=CC=CC2=C1"
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -159,7 +159,7 @@ ConvertToSmiles <- function(mols,
   # A single element R vector is converted to a Python scalar. To overcome this
   # behavior R vectors are represented as lists explicitly.
 
-  py_obj <- reticulate::py$convert_to_smiles(
+  py_obj <- the$py_module$convert_to_smiles(
     as.list(mols),
     isomericSmiles = isomeric,
     kekuleSmiles = kekule,
@@ -204,7 +204,6 @@ ConvertToSmiles <- function(mols,
 #'   ConvertToInchi("InChI=1S/CH4/h1H4")
 #'   #> "InChI=1S/CH4/h1H4"
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -237,7 +236,7 @@ ConvertToInchi <- function(mols,
   # A single element R vector is converted to a Python scalar. To overcome this
   # behavior R vectors are represented as lists explicitly.
 
-  py_obj <- reticulate::py$convert_to_inchi(as.list(mols), verbose = verbose)
+  py_obj <- the$py_module$convert_to_inchi(as.list(mols), verbose = verbose)
   out <- reticulate::py_to_r(py_obj)
   out[out == ""] <- NA_character_
   return(out)
@@ -277,7 +276,6 @@ ConvertToInchi <- function(mols,
 #'   #> "OTMSDBZUPAUEDD-UHFFFAOYSA-N"
 #'   #> "UHOVQNZJYSORNB-UHFFFAOYSA-N"
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -310,7 +308,7 @@ ConvertToInchikey <- function(mols,
   # A single element R vector is converted to a Python scalar. To overcome this
   # behavior R vectors are represented as lists explicitly.
 
-  py_obj <- reticulate::py$convert_to_inchikey(as.list(mols))
+  py_obj <- the$py_module$convert_to_inchikey(as.list(mols))
   out <- reticulate::py_to_r(py_obj)
   out[out == ""] <- NA_character_
   return(out)

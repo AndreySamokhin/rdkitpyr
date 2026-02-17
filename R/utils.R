@@ -33,18 +33,17 @@
 #'   Internal helper functions used during automated tests to suppress or
 #'   restore RDKit warning output in the Python backend.
 #'
-#' @importFrom reticulate py
 #' @noRd
 #==============================================================================#
 .DisableRdkitWarnings <- function() {
   .EnsurePythonReady()
-  reticulate::py$disable_rdkit_warnings()
+  the$py_module$disable_rdkit_warnings()
   return(invisible(NULL))
 }
 
 .EnableRdkitWarnings <- function() {
   .EnsurePythonReady()
-  reticulate::py$enable_rdkit_warnings()
+  the$py_module$enable_rdkit_warnings()
   return(invisible(NULL))
 }
 
