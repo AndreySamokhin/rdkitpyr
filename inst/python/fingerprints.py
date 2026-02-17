@@ -19,7 +19,6 @@ def calculate_maccs_fps(
             return []
         molecules = convert_to_molecules(
             molecule_list,
-            verbose=verbose,
         )
         for molecule in molecules:
             if molecule is None:
@@ -65,8 +64,6 @@ def calculate_rdkit_fps(
             return []
         molecules = convert_to_molecules(
             molecule_list,
-            verbose=verbose,
-            
         )
         for molecule in molecules:
             if molecule is None:
@@ -130,8 +127,6 @@ def calculate_morgan_fps(
             return []
         molecules = convert_to_molecules(
             molecule_list,
-            verbose=verbose,
-            
         )
         for molecule in molecules:
             if molecule is None:

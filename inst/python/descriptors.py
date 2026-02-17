@@ -19,7 +19,6 @@ def calculate_all_descriptors(
             return []
         molecules = convert_to_molecules(
             molecule_list,
-            verbose=verbose,
         )
         for molecule in molecules:
             if molecule is None:
@@ -57,7 +56,6 @@ def calculate_exact_mass(
             return []
         molecules = convert_to_molecules(
             molecule_list,
-            verbose=verbose,
         )
         for molecule in molecules:
             if molecule is None:
@@ -87,7 +85,6 @@ def calculate_molecular_weight(
             return []
         molecules = convert_to_molecules(
             molecule_list,
-            verbose=verbose,
         )
         for molecule in molecules:
             if molecule is None:

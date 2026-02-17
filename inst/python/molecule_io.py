@@ -7,27 +7,26 @@ def convert_to_molecules(
     molecule_strings: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     sanitize: bool = True,
     removeHs: bool = True,
-    replacements: Optional[dict] = None,
-    verbose: bool = False,
+    replacements: Optional[dict] = None
 ):
-    out = []
-    if not verbose:
-        rdBase.DisableLog("rdApp.*")
-    try:
-        if isinstance(molecule_strings, str):
-            molecule_strings = [molecule_strings]
-        if len(molecule_strings) == 0:
-            return []
+    if replacements is None:
+        replacements = {}
 
-        for molecule in molecule_strings:
+    if isinstance(molecule_strings, str) or isinstance(molecule_strings, Chem.Mol):
+        molecule_strings = [molecule_strings]
+    
+    if len(molecule_strings) == 0:
+        return []
+        
+    out = []
+    for molecule in molecule_strings:
+        try:
             if isinstance(molecule, str):
                 if molecule.startswith("InChI="):
                     mol = Chem.MolFromInchi(
                         molecule, sanitize=sanitize, removeHs=removeHs
                     )
                 else:
-                    if replacements is None:
-                        replacements = {}
                     mol = Chem.MolFromSmiles(
                         molecule, sanitize=sanitize, replacements=replacements
                     )
@@ -36,9 +35,9 @@ def convert_to_molecules(
                 out.append(molecule)
             else:
                 out.append(None)
-    finally:
-        if not verbose:
-            rdBase.EnableLog("rdApp.*")
+        except Exception:
+            # RDKit failed, mark as invalid
+            out.append(None)
     return out
 
 
@@ -72,7 +71,6 @@ def convert_to_smiles(
             sanitize=sanitize,
             removeHs=removeHs,
             replacements=replacements,
-            verbose=verbose,
         )
         for molecule in molecules:
             if molecule is None:
@@ -119,7 +117,6 @@ def convert_to_inchi(
             sanitize=sanitize,
             removeHs=removeHs,
             replacements=replacements,
-            verbose=verbose,
         )
         for molecule in molecules:
             if molecule is None:
