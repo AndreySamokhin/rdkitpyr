@@ -101,7 +101,6 @@ CalculateAllDescriptors <- function(mols,
 #'
 #' @description
 #'   Calculate the exact mass (monoisotopic mass) for a set of molecules.
-#'   Exact mass is computed based on the most abundant isotopes of each element.
 #'
 #'   The calculation is performed using the \code{ExactMolWt()} function from
 #'   the \code{rdkit.Chem.Descriptors} module in RDKit.
@@ -166,8 +165,6 @@ CalculateExactMass <- function(mols,
 #'
 #' @description
 #'   Calculate the molecular weight (average mass) for a set of molecules.
-#'   Molecular weight is computed based on the natural isotopic abundance of
-#'   each element.
 #'
 #'   The calculation is performed using the \code{MolWt()} function from the
 #'   \code{rdkit.Chem.Descriptors} module in RDKit.

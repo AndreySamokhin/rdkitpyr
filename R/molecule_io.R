@@ -8,7 +8,7 @@
 #'   (SMILES or InChI) into a list of RDKit Mol objects (Python-backed pointers
 #'   via \code{reticulate}). The resulting objects can be reused in subsequent
 #'   operations without repeated conversion from SMILES or InChI. This is
-#'   particularly useful when multiple chemoinformatics tasks are performed on
+#'   particularly useful when multiple cheminformatics tasks are performed on
 #'   the same set of molecules, improving efficiency by avoiding repeated
 #'   parsing steps.
 #'
@@ -55,17 +55,13 @@ ParseMolecules <- function(mols,
 
 
 #==============================================================================#
-#' Convert molecular representations to SMILES strings
+#' Convert molecules to SMILES strings
 #'
 #' @description
-#'   Convert molecular representations to SMILES strings.
+#'   Convert molecules to SMILES strings.
 #'
-#'   The input must be a character vector of SMILES or InChI strings,
-#'   or a list of RDKit Mol objects.
-#'
-#'   When SMILES strings are provided as input, their representation can
-#'   be transformed, for example, to canonical SMILES or with stereochemistry
-#'   omitted.
+#'   SMILES strings can be provided as input to obtain their canonical form or
+#'   to remove stereochemistry.
 #'
 #' @inheritParams ParseMolecules
 #' @param mols
@@ -159,9 +155,6 @@ ConvertToSmiles <- function(mols,
 
   #--[ Convert to SMILES ]------------------------------------------------------
 
-  # A single element R vector is converted to a Python scalar. To overcome this
-  # behavior R vectors are represented as lists explicitly.
-
   py_obj <- the$py_module$convert_to_smiles(
     as.list(mols),
     isomericSmiles = isomeric,
@@ -179,14 +172,14 @@ ConvertToSmiles <- function(mols,
 
 
 #==============================================================================#
-#' Convert molecular representations to InChI strings
+#' Convert molecules to InChI strings
 #'
 #' @description
-#'   Convert molecular representations to InChI strings.
+#'   Convert molecules to InChI strings.
 #'
 #'   InChI identifiers can technically be provided as input. In this case, the
-#'   output is expected to be identical to the input. This can be useful to test
-#'   RDKit's consistency with challenging molecules.
+#'   output is expected to be identical to the input. This can be useful only to
+#'   test RDKit's consistency with challenging molecules.
 #'
 #' @inheritParams ParseMolecules
 #' @param mols
@@ -237,10 +230,10 @@ ConvertToInchi <- function(mols,
 
   #--[ Convert Smiles ]---------------------------------------------------------
 
-  # A single element R vector is converted to a Python scalar. To overcome this
-  # behavior R vectors are represented as lists explicitly.
-
-  py_obj <- the$py_module$convert_to_inchi(as.list(mols), verbose = verbose)
+  py_obj <- the$py_module$convert_to_inchi(
+    as.list(mols),
+    verbose = verbose
+  )
   out <- reticulate::py_to_r(py_obj)
   out[out == ""] <- NA_character_
   return(out)
@@ -249,13 +242,13 @@ ConvertToInchi <- function(mols,
 
 
 #==============================================================================#
-#' Convert molecular representations to InChIKey strings
+#' Convert molecules to InChIKey strings
 #'
 #' @description
-#'   Convert molecular representations to InChIKey strings.
+#'   Convert molecules to InChIKey strings.
 #'
-#'   The input must be a character vector of SMILES or InChI strings,
-#'   or a list of RDKit Mol objects.
+#'   Conversion of an InChI string to an InChIKey relies on the IUPAC library,
+#'   allowing conversion without creating intermediate RDKit Mol objects.
 #'
 #' @inheritParams ParseMolecules
 #' @param mols
