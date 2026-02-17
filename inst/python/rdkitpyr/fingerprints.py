@@ -1,6 +1,7 @@
-from rdkit import Chem
+from rdkit import Chem, rdBase
 from rdkit.Chem import MACCSkeys, rdmolops, rdFingerprintGenerator
 from typing import Sequence
+from .molecule_io import convert_to_molecules
 
 
 
