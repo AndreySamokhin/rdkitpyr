@@ -36,7 +36,6 @@ def convert_to_molecules(
             else:
                 out.append(None)
         except Exception:
-            # RDKit failed, mark as invalid
             out.append(None)
     return out
 
