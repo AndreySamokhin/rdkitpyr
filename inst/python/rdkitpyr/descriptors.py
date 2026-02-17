@@ -1,7 +1,7 @@
 from rdkit import Chem, rdBase
 from rdkit.Chem import Descriptors
 from typing import Sequence
-from .molecule_io import convert_to_molecules
+from .molecule_io import parse_molecules
 
 
 
@@ -20,7 +20,7 @@ def calculate_all_descriptors(
     try:
         out = []
         empty_desc = None
-        molecules = convert_to_molecules(molecule_list)
+        molecules = parse_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
                 # 'Descriptors.descList' is not part of public API
@@ -53,7 +53,7 @@ def calculate_exact_mass(
         rdBase.DisableLog("rdApp.*")
     try:
         out = []
-        molecules = convert_to_molecules(molecule_list)
+        molecules = parse_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
                 out.append(float('nan'))
@@ -77,7 +77,7 @@ def calculate_molecular_weight(
         rdBase.DisableLog("rdApp.*")
     try:
         out = []
-        molecules = convert_to_molecules(molecule_list)
+        molecules = parse_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
                 out.append(float('nan'))

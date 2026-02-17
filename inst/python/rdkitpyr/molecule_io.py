@@ -2,7 +2,7 @@ from rdkit import Chem, rdBase
 from typing import Sequence, Optional
 
 
-def convert_to_molecules(
+def parse_molecules(
     molecule_strings: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     sanitize: bool = True,
     removeHs: bool = True,
@@ -57,7 +57,7 @@ def convert_to_smiles(
     if not verbose:
         rdBase.DisableLog("rdApp.*")
     try:
-        molecules = convert_to_molecules(
+        molecules = parse_molecules(
             molecule_list,
             sanitize=sanitize,
             removeHs=removeHs,
@@ -101,7 +101,7 @@ def convert_to_inchi(
     if not verbose:
         rdBase.DisableLog("rdApp.*")
     try:
-        molecules = convert_to_molecules(
+        molecules = parse_molecules(
             molecule_list,
             sanitize=sanitize,
             removeHs=removeHs,

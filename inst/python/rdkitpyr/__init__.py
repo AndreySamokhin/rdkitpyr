@@ -11,7 +11,7 @@ from .fingerprints import (
 )
 
 from .molecule_io import (
-    convert_to_molecules,
+    parse_molecules,
     convert_to_smiles,
     convert_to_inchi,
     convert_to_inchikey,
@@ -35,7 +35,7 @@ __all__ = [
     "calculate_morgan_fps",
     
     # molecule_io.py
-    "convert_to_molecules",
+    "parse_molecules",
     "convert_to_smiles",
     "convert_to_inchi",
     "convert_to_inchikey",

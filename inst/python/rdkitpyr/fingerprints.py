@@ -1,7 +1,7 @@
 from rdkit import Chem, rdBase
 from rdkit.Chem import MACCSkeys, rdmolops, rdFingerprintGenerator
 from typing import Sequence
-from .molecule_io import convert_to_molecules
+from .molecule_io import parse_molecules
 
 
 
@@ -17,7 +17,7 @@ def calculate_maccs_fps(
         rdBase.DisableLog("rdApp.*")
     try:
         out = []
-        molecules = convert_to_molecules(molecule_list)
+        molecules = parse_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
                 out.append([-1] * fp_size) # '-1' marks invalid molecules for R
@@ -55,7 +55,7 @@ def calculate_rdkit_fps(
         rdBase.DisableLog("rdApp.*")
     try:
         out = []
-        molecules = convert_to_molecules(molecule_list)
+        molecules = parse_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
                 out.append([-1] * fpSize) # '-1' marks invalid molecules for R
@@ -111,7 +111,7 @@ def calculate_morgan_fps(
         )
         
         out = []
-        molecules = convert_to_molecules(molecule_list)
+        molecules = parse_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
                 out.append([-1] * fpSize) # '-1' marks invalid molecules for R

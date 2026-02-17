@@ -45,7 +45,7 @@ ParseMolecules <- function(mols,
   if (!is.logical(verbose) || length(verbose) != 1L) {
     stop("'verbose' must be a logical value.")
   }
-  py_obj <- the$py_module$convert_to_molecules(as.list(mols))
+  py_obj <- the$py_module$parse_molecules(as.list(mols))
   return(reticulate::py_to_r(py_obj))
 }
 
