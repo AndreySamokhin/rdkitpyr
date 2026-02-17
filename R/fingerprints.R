@@ -256,15 +256,10 @@ CalculateRdkitFingerprints <- function(mols,
     useBondOrder = use_bond_order,
     verbose = verbose
   )
-  fps <- t(vapply(reticulate::py_to_r(py_obj), function(a1) {
-    if(is.null(a1)) {
-      return(rep(NA_integer_, fp_size))
-    } else {
-      return(a1)
-    }
-  }, integer(fp_size), USE.NAMES = FALSE))
-  attr(fps, "valid") <- !is.na(fps[, 1L])
-  return(fps)
+  out <- t(vapply(reticulate::py_to_r(py_obj), unlist, integer(fp_size)))
+  out[out == -1L] <- NA_integer_
+  attr(out, "valid") <- !is.na(out[, 1L])
+  return(out)
 }
 
 

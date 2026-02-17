@@ -42,29 +42,23 @@ def calculate_rdkit_fps(
     useBondOrder: bool = True,
     verbose: bool = False,
 ):
-    # TODO: The 'RDKFingerprint()' function contains some additional arguments:
+    # Ref.: https://rdkit.org/docs/source/rdkit.Chem.rdmolops.html
+    # Function: rdmolops.RDKFingerprint()
+    # Note: The following arguments exist but are not used in this wrapper:
     #   - atomInvariants
     #   - fromAtoms
     #   - atomBits
     #   - bitInfo
     
-    out = []
-
     if not verbose:
         rdBase.DisableLog("rdApp.*")
     try:
-        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
-            molecule_list = [molecule_list]
-        if len(molecule_list) == 0:
-            return []
-        molecules = convert_to_molecules(
-            molecule_list,
-        )
+        out = []
+        molecules = convert_to_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
-                out.append(None)
+                out.append([-1] * fpSize) # '-1' marks invalid molecules for R
             else:
-                # https://rdkit.org/docs/source/rdkit.Chem.rdmolops.html
                 fp = rdmolops.RDKFingerprint(
                     molecule,
                     minPath=minPath,
@@ -82,7 +76,6 @@ def calculate_rdkit_fps(
         if not verbose:
             rdBase.EnableLog("rdApp.*")
     return out
-
 
 
 def calculate_morgan_fps(
