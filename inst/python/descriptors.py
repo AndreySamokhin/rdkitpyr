@@ -8,37 +8,37 @@ def calculate_all_descriptors(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     verbose: bool = False,
 ):
-    out = []
-
+    # https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
+    # Descriptors.CalcMolDescriptors()
+    #   Unused arguments:
+    #     - silent
+    
     if not verbose:
         rdBase.DisableLog("rdApp.*")
+    
     try:
-        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
-            molecule_list = [molecule_list]
-        if len(molecule_list) == 0:
-            return []
-        molecules = convert_to_molecules(
-            molecule_list,
-        )
+        out = []
+        empty_desc = None
+        molecules = convert_to_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
-                out.append(
-                    {name: float('nan') for name, _ in Descriptors.descList}
-                )
+                # 'Descriptors.descList' is not part of public API
+                if empty_desc is None:
+                    dummy_mol = Chem.MolFromSmiles("C")
+                    empty_desc = Descriptors.CalcMolDescriptors(dummy_mol)
+                    empty_desc = {name: float('nan') for name in empty_desc}
+                out.append(empty_desc.copy())
             else:
-                # https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
                 out.append(
                     Descriptors.CalcMolDescriptors(
                         molecule,
-                        missingVal=None,
-                        silent=not verbose
+                        missingVal=float('nan'),
                     )
                 )
     finally:
         if not verbose:
             rdBase.EnableLog("rdApp.*")
     return out
-
 
 
 def calculate_exact_mass(
