@@ -2,7 +2,7 @@
 % Please edit documentation in R/molecule_io.R
 \name{ConvertToInchi}
 \alias{ConvertToInchi}
-\title{Convert molecular representations to InChI strings}
+\title{Convert molecules to InChI strings}
 \usage{
 ConvertToInchi(mols, verbose = FALSE)
 }
@@ -18,11 +18,11 @@ A character vector. InChI strings. Elements that cannot be converted are
   returned as \code{NA}.
 }
 \description{
-Convert molecular representations to InChI strings.
+Convert molecules to InChI strings.
 
   InChI identifiers can technically be provided as input. In this case, the
-  output is expected to be identical to the input. This can be useful to test
-  RDKit's consistency with challenging molecules.
+  output is expected to be identical to the input. This can be useful only to
+  test RDKit's consistency with challenging molecules.
 }
 \examples{
 \dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}

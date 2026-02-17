@@ -26,7 +26,7 @@ Calculate all molecular descriptors available in RDKit for a set of
   molecules.
 
   The descriptors are calculated using the \code{CalcMolDescriptors()}
-  function from the \code{Descriptors} module in RDKit.
+  function from the \code{rdkit.Chem.Descriptors} module in RDKit.
 
   The set of returned descriptors may depend on the installed RDKit version.
 
@@ -36,6 +36,7 @@ Calculate all molecular descriptors available in RDKit for a set of
   the input.
 }
 \examples{
+\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Calculate all RDKit descriptors
   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
   desc <- CalculateAllDescriptors(smiles)
@@ -54,5 +55,5 @@ Calculate all molecular descriptors available in RDKit for a set of
   # Check which molecules were successfully processed
   attr(desc, "valid")
   #> TRUE TRUE FALSE
-
+\dontshow{\}) # examplesIf}
 }

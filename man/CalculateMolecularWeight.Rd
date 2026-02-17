@@ -19,16 +19,15 @@ A numeric vector containing the molecular weight for each molecule.
 }
 \description{
 Calculate the molecular weight (average mass) for a set of molecules.
-  Molecular weight is computed based on the natural isotopic abundance of
-  each element.
 
   The calculation is performed using the \code{MolWt()} function from the
-  \code{Descriptors} module in RDKit.
+  \code{rdkit.Chem.Descriptors} module in RDKit.
 }
 \examples{
-  # Calculate exact mass for a set of molecules
+\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
+  # Calculate average molecular weight for a set of molecules
   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
   CalculateMolecularWeight(smiles)
   #> 46.069 78.114 NA
-
+\dontshow{\}) # examplesIf}
 }
