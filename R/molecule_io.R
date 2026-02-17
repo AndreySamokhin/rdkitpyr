@@ -45,7 +45,10 @@ ParseMolecules <- function(mols,
   if (!is.logical(verbose) || length(verbose) != 1L) {
     stop("'verbose' must be a logical value.")
   }
-  py_obj <- the$py_module$parse_molecules(as.list(mols))
+  py_obj <- the$py_module$parse_molecules(
+    as.list(mols),
+    verbose = verbose
+  )
   return(reticulate::py_to_r(py_obj))
 }
 
@@ -165,7 +168,8 @@ ConvertToSmiles <- function(mols,
     kekuleSmiles = kekule,
     allBondsExplicit = explicit_bonds,
     allHsExplicit = explicit_hydrogens,
-    canonical = canonical
+    canonical = canonical,
+    verbose = verbose
   )
   out <- reticulate::py_to_r(py_obj)
   out[out == ""] <- NA_character_
@@ -305,10 +309,10 @@ ConvertToInchikey <- function(mols,
 
   #--[ Convert InchI ]----------------------------------------------------------
 
-  # A single element R vector is converted to a Python scalar. To overcome this
-  # behavior R vectors are represented as lists explicitly.
-
-  py_obj <- the$py_module$convert_to_inchikey(as.list(mols))
+  py_obj <- the$py_module$convert_to_inchikey(
+    as.list(mols),
+    verbose = verbose
+  )
   out <- reticulate::py_to_r(py_obj)
   out[out == ""] <- NA_character_
   return(out)
