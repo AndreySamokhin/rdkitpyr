@@ -3,7 +3,6 @@
 .Rprofile
 .RData
 .Ruserdata
-.Rbuildignore
 *.Rproj
 *.py[cod]
 
