@@ -68,22 +68,18 @@ CalculateMaccsFingerprints <- function(mols,
 
   #--[ Calculate fingerprints ]-------------------------------------------------
 
-  # rdkit.Chem.MACCSkeys.GenMACCSKeys()
   # https://rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html
+  # rdkit.Chem.MACCSkeys.GenMACCSKeys()
+
   py_obj <- reticulate::py$calculate_maccs_fps(
     as.list(mols),
     verbose = verbose
   )
-  fp_size <- 167L
-  fps <- t(vapply(reticulate::py_to_r(py_obj), function(a1) {
-    if(is.null(a1)) {
-      return(rep(NA_integer_, fp_size))
-    } else {
-      return(a1)
-    }
-  }, integer(fp_size), USE.NAMES = FALSE))
-  attr(fps, "valid") <- !is.na(fps[, 1L])
-  return(fps)
+  fp_size <- 167L # hard-coded length for MACCS fingerprint
+  out <- t(vapply(reticulate::py_to_r(py_obj), unlist, integer(fp_size)))
+  out[out == -1L] <- NA_integer_
+  attr(out, "valid") <- !is.na(out[, 1L])
+  return(out)
 }
 
 

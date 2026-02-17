@@ -8,30 +8,25 @@ def calculate_maccs_fps(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     verbose: bool = False,
 ):
-    out = []
-
+    # https://rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html
+    # MACCSkeys.GenMACCSKeys()
+    
+    fp_size = 167 # the length of the vector is hard-coded for MACCS
     if not verbose:
         rdBase.DisableLog("rdApp.*")
     try:
-        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
-            molecule_list = [molecule_list]
-        if len(molecule_list) == 0:
-            return []
-        molecules = convert_to_molecules(
-            molecule_list,
-        )
+        out = []
+        molecules = convert_to_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
-                out.append(None)
+                out.append([-1] * fp_size) # '-1' marks invalid molecules for R
             else:
-                # https://rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html
                 fp = MACCSkeys.GenMACCSKeys(molecule)
                 out.append(list(fp))
     finally:
         if not verbose:
             rdBase.EnableLog("rdApp.*")
     return out
-
 
 
 def calculate_rdkit_fps(
