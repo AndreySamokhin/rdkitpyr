@@ -25,7 +25,7 @@
 #'   Additionally, the \code{"valid"} attribute is attached to indicate which
 #'   molecules were successfully processed.
 #'
-#' @examples
+#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
 #'   # Calculate MACCS fingerprints
 #'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
 #'   fps <- CalculateMaccsFingerprints(smiles)
@@ -132,7 +132,7 @@ CalculateMaccsFingerprints <- function(mols,
 #'   Additionally, the \code{"valid"} attribute is attached to indicate which
 #'   molecules were successfully processed.
 #'
-#' @examples
+#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
 #'   # Calculate RDKit fingerprints
 #'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
 #'   fps <- CalculateRdkitFingerprints(smiles)
@@ -305,7 +305,7 @@ CalculateRdkitFingerprints <- function(mols,
 #'   Additionally, the \code{"valid"} attribute is attached to indicate which
 #'   molecules were successfully processed.
 #'
-#' @examples
+#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
 #'   # Calculate Morgan fingerprints
 #'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
 #'   fps <- CalculateMorganFingerprints(smiles)
