@@ -69,23 +69,18 @@ def calculate_molecular_weight(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     verbose: bool = False,
 ):
-    out = []
-
+    # https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
+    # Descriptors.MolWt()
+    
     if not verbose:
         rdBase.DisableLog("rdApp.*")
     try:
-        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
-            molecule_list = [molecule_list]
-        if len(molecule_list) == 0:
-            return []
-        molecules = convert_to_molecules(
-            molecule_list,
-        )
+        out = []
+        molecules = convert_to_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
                 out.append(float('nan'))
             else:
-                # https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
                 out.append(Descriptors.MolWt(molecule))
     finally:
         if not verbose:
