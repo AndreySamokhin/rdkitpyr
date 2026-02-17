@@ -8,10 +8,10 @@ def calculate_all_descriptors(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     verbose: bool = False,
 ):
-    # https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
-    # Descriptors.CalcMolDescriptors()
-    #   Unused arguments:
-    #     - silent
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
+    # Function: Descriptors.CalcMolDescriptors()
+    # Note: The following arguments exist but are not used in this wrapper:
+    #   - silent
     
     if not verbose:
         rdBase.DisableLog("rdApp.*")
@@ -45,8 +45,8 @@ def calculate_exact_mass(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     verbose: bool = False,
 ):
-    # https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
-    # Descriptors.ExactMolWt()
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
+    # Function: Descriptors.ExactMolWt()
     
     if not verbose:
         rdBase.DisableLog("rdApp.*")
@@ -69,8 +69,8 @@ def calculate_molecular_weight(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     verbose: bool = False,
 ):
-    # https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
-    # Descriptors.MolWt()
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
+    # Function: Descriptors.MolWt()
     
     if not verbose:
         rdBase.DisableLog("rdApp.*")

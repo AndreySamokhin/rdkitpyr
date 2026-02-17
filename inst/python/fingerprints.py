@@ -8,10 +8,10 @@ def calculate_maccs_fps(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     verbose: bool = False,
 ):
-    # https://rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html
-    # MACCSkeys.GenMACCSKeys()
+    # Ref.: https://rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html
+    # Function: MACCSkeys.GenMACCSKeys()
     
-    fp_size = 167 # the length of the vector is hard-coded for MACCS
+    fp_size = 167 # hard-coded length for MACCS fingerprint
     if not verbose:
         rdBase.DisableLog("rdApp.*")
     try:
