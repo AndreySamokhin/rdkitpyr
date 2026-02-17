@@ -15,6 +15,7 @@ A data frame.
     \item{\code{n_labeled_atoms}}{Number of isotopically labeled atoms.}
     \item{\code{charge}}{The total charge of a molecule.}
     \item{\code{exact_mass}}{Exact monoisotopic mass.}
+    \item{\code{molecular_weight}}{Average molecular weight.}
     \item{\code{formula}}{Molecular formula.}
     \item{\code{formula_isotopes}}{Molecular formula with explicit isotopes.}
   }
