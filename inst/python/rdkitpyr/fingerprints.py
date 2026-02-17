@@ -17,7 +17,10 @@ def calculate_maccs_fps(
         rdBase.DisableLog("rdApp.*")
     try:
         out = []
-        molecules = parse_molecules(molecule_list)
+        molecules = parse_molecules(
+            molecule_list,
+            verbose=True,
+        )
         for molecule in molecules:
             if molecule is None:
                 out.append([-1] * fp_size) # '-1' marks invalid molecules for R
@@ -55,7 +58,10 @@ def calculate_rdkit_fps(
         rdBase.DisableLog("rdApp.*")
     try:
         out = []
-        molecules = parse_molecules(molecule_list)
+        molecules = parse_molecules(
+            molecule_list,
+            verbose=True,
+        )
         for molecule in molecules:
             if molecule is None:
                 out.append([-1] * fpSize) # '-1' marks invalid molecules for R
@@ -111,7 +117,10 @@ def calculate_morgan_fps(
         )
         
         out = []
-        molecules = parse_molecules(molecule_list)
+        molecules = parse_molecules(
+            molecule_list,
+            verbose=True,
+        )
         for molecule in molecules:
             if molecule is None:
                 out.append([-1] * fpSize) # '-1' marks invalid molecules for R

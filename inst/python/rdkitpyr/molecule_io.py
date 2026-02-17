@@ -69,6 +69,7 @@ def convert_to_smiles(
             sanitize=sanitize,
             removeHs=removeHs,
             replacements=replacements,
+            verbose=True,
         )
         
         out = []
@@ -113,6 +114,7 @@ def convert_to_inchi(
             sanitize=sanitize,
             removeHs=removeHs,
             replacements=replacements,
+            verbose=True,
         )
         
         out = []

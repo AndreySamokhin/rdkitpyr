@@ -20,7 +20,10 @@ def calculate_all_descriptors(
     try:
         out = []
         empty_desc = None
-        molecules = parse_molecules(molecule_list)
+        molecules = parse_molecules(
+            molecule_list,
+            verbose=True,
+        )
         for molecule in molecules:
             if molecule is None:
                 # 'Descriptors.descList' is not part of public API
@@ -53,7 +56,10 @@ def calculate_exact_mass(
         rdBase.DisableLog("rdApp.*")
     try:
         out = []
-        molecules = parse_molecules(molecule_list)
+        molecules = parse_molecules(
+            molecule_list,
+            verbose=True,
+        )
         for molecule in molecules:
             if molecule is None:
                 out.append(float('nan'))
@@ -77,7 +83,10 @@ def calculate_molecular_weight(
         rdBase.DisableLog("rdApp.*")
     try:
         out = []
-        molecules = parse_molecules(molecule_list)
+        molecules = parse_molecules(
+            molecule_list,
+            verbose=True,
+        )
         for molecule in molecules:
             if molecule is None:
                 out.append(float('nan'))
