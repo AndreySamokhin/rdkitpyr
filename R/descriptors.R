@@ -84,7 +84,13 @@ CalculateAllDescriptors <- function(mols,
   )
   temp <- reticulate::py_to_r(py_obj)
   n_descriptors <- length(temp[[1L]])
-  descriptors <- as.data.frame(t(vapply(temp, unlist, numeric(n_descriptors))))
+  descriptors <- as.data.frame(
+    t(vapply(temp, function(a1) {
+      num_vec <- unlist(a1)
+      num_vec[is.nan(num_vec)] <- NA_real_
+      return(num_vec)
+    }, numeric(n_descriptors)))
+  )
   attr(descriptors, "valid") <- !is.na(descriptors[, 1L])
   return(descriptors)
 }
