@@ -48,7 +48,6 @@
 #'   attr(desc, "valid")
 #'   #> TRUE TRUE FALSE
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -78,7 +77,7 @@ CalculateAllDescriptors <- function(mols,
 
   #--[ Convert to SMILES ]------------------------------------------------------
 
-  py_obj <- reticulate::py$calculate_all_descriptors(
+  py_obj <- the$py_module$calculate_all_descriptors(
     as.list(mols),
     verbose = verbose
   )
@@ -122,7 +121,6 @@ CalculateAllDescriptors <- function(mols,
 #'   CalculateExactMass(smiles)
 #'   #> 46.04186 78.04695 NA
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -152,7 +150,7 @@ CalculateExactMass <- function(mols,
 
   #--[ Convert to SMILES ]------------------------------------------------------
 
-  py_obj <- reticulate::py$calculate_exact_mass(
+  py_obj <- the$py_module$calculate_exact_mass(
     as.list(mols),
     verbose = verbose
   )
@@ -189,7 +187,6 @@ CalculateExactMass <- function(mols,
 #'   CalculateMolecularWeight(smiles)
 #'   #> 46.069 78.114 NA
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -219,7 +216,7 @@ CalculateMolecularWeight <- function(mols,
 
   #--[ Convert to SMILES ]------------------------------------------------------
 
-  py_obj <- reticulate::py$calculate_molecular_weight(
+  py_obj <- the$py_module$calculate_molecular_weight(
     as.list(mols),
     verbose = verbose
   )

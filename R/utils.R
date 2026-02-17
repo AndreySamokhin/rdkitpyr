@@ -25,3 +25,27 @@
 }
 
 
+
+#==============================================================================#
+#' Disable or Enable RDKit Warning Messages
+#'
+#' @description
+#'   Internal helper functions used during automated tests to suppress or
+#'   restore RDKit warning output in the Python backend.
+#'
+#' @noRd
+#==============================================================================#
+.DisableRdkitWarnings <- function() {
+  .EnsurePythonReady()
+  the$py_module$disable_rdkit_warnings()
+  return(invisible(NULL))
+}
+
+.EnableRdkitWarnings <- function() {
+  .EnsurePythonReady()
+  the$py_module$enable_rdkit_warnings()
+  return(invisible(NULL))
+}
+
+
+

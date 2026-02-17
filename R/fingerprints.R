@@ -38,7 +38,6 @@
 #'   attr(fps, "valid")
 #'   #> TRUE TRUE FALSE
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -68,22 +67,18 @@ CalculateMaccsFingerprints <- function(mols,
 
   #--[ Calculate fingerprints ]-------------------------------------------------
 
-  # rdkit.Chem.MACCSkeys.GenMACCSKeys()
   # https://rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html
-  py_obj <- reticulate::py$calculate_maccs_fps(
+  # rdkit.Chem.MACCSkeys.GenMACCSKeys()
+
+  py_obj <- the$py_module$calculate_maccs_fps(
     as.list(mols),
     verbose = verbose
   )
-  fp_size <- 167L
-  fps <- t(vapply(reticulate::py_to_r(py_obj), function(a1) {
-    if(is.null(a1)) {
-      return(rep(NA_integer_, fp_size))
-    } else {
-      return(a1)
-    }
-  }, integer(fp_size), USE.NAMES = FALSE))
-  attr(fps, "valid") <- !is.na(fps[, 1L])
-  return(fps)
+  fp_size <- 167L # hard-coded length for MACCS fingerprint
+  out <- t(vapply(reticulate::py_to_r(py_obj), unlist, integer(fp_size)))
+  out[out == -1L] <- NA_integer_
+  attr(out, "valid") <- !is.na(out[, 1L])
+  return(out)
 }
 
 
@@ -150,7 +145,6 @@ CalculateMaccsFingerprints <- function(mols,
 #'   attr(fps, "valid")
 #'   #> TRUE TRUE FALSE
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -247,7 +241,7 @@ CalculateRdkitFingerprints <- function(mols,
 
   # rdkit.Chem.rdmolops.RDKFingerprint()
   # https://rdkit.org/docs/source/rdkit.Chem.rdmolops.html
-  py_obj <- reticulate::py$calculate_rdkit_fps(
+  py_obj <- the$py_module$calculate_rdkit_fps(
     as.list(mols),
     minPath = as.integer(min_path),
     maxPath = as.integer(max_path),
@@ -260,15 +254,10 @@ CalculateRdkitFingerprints <- function(mols,
     useBondOrder = use_bond_order,
     verbose = verbose
   )
-  fps <- t(vapply(reticulate::py_to_r(py_obj), function(a1) {
-    if(is.null(a1)) {
-      return(rep(NA_integer_, fp_size))
-    } else {
-      return(a1)
-    }
-  }, integer(fp_size), USE.NAMES = FALSE))
-  attr(fps, "valid") <- !is.na(fps[, 1L])
-  return(fps)
+  out <- t(vapply(reticulate::py_to_r(py_obj), unlist, integer(fp_size)))
+  out[out == -1L] <- NA_integer_
+  attr(out, "valid") <- !is.na(out[, 1L])
+  return(out)
 }
 
 
@@ -329,7 +318,6 @@ CalculateRdkitFingerprints <- function(mols,
 #'   attr(fps, "valid")
 #'   #> TRUE TRUE FALSE
 #'
-#' @importFrom reticulate py
 #' @importFrom reticulate py_to_r
 #'
 #' @export
@@ -408,7 +396,7 @@ CalculateMorganFingerprints <- function(mols,
 
   # rdkit.Chem.rdFingerprintGenerator.GetMorganGenerator()
   # https://rdkit.org/docs/source/rdkit.Chem.rdFingerprintGenerator.html
-  py_obj <- reticulate::py$calculate_morgan_fps(
+  py_obj <- the$py_module$calculate_morgan_fps(
     as.list(mols),
     radius = as.integer(radius),
     fpSize = as.integer(fp_size),
@@ -418,15 +406,10 @@ CalculateMorganFingerprints <- function(mols,
     includeRingMembership = include_ring_membership,
     verbose = verbose
   )
-  fps <- t(vapply(reticulate::py_to_r(py_obj), function(a1) {
-    if(is.null(a1)) {
-      return(rep(NA_integer_, fp_size))
-    } else {
-      return(a1)
-    }
-  }, integer(fp_size), USE.NAMES = FALSE))
-  attr(fps, "valid") <- !is.na(fps[, 1L])
-  return(fps)
+  out <- t(vapply(reticulate::py_to_r(py_obj), unlist, integer(fp_size)))
+  out[out == -1L] <- NA_integer_
+  attr(out, "valid") <- !is.na(out[, 1L])
+  return(out)
 }
 
 

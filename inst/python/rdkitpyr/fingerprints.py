@@ -1,6 +1,7 @@
-from rdkit import Chem
+from rdkit import Chem, rdBase
 from rdkit.Chem import MACCSkeys, rdmolops, rdFingerprintGenerator
 from typing import Sequence
+from .molecule_io import parse_molecules
 
 
 
@@ -8,31 +9,25 @@ def calculate_maccs_fps(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     verbose: bool = False,
 ):
-    out = []
-
+    # Ref.: https://rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html
+    # Function: MACCSkeys.GenMACCSKeys()
+    
+    fp_size = 167 # hard-coded length for MACCS fingerprint
     if not verbose:
         rdBase.DisableLog("rdApp.*")
     try:
-        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
-            molecule_list = [molecule_list]
-        if len(molecule_list) == 0:
-            return []
-        molecules = convert_to_molecules(
-            molecule_list,
-            verbose=verbose,
-        )
+        out = []
+        molecules = parse_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
-                out.append(None)
+                out.append([-1] * fp_size) # '-1' marks invalid molecules for R
             else:
-                # https://rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html
                 fp = MACCSkeys.GenMACCSKeys(molecule)
                 out.append(list(fp))
     finally:
         if not verbose:
             rdBase.EnableLog("rdApp.*")
     return out
-
 
 
 def calculate_rdkit_fps(
@@ -48,31 +43,23 @@ def calculate_rdkit_fps(
     useBondOrder: bool = True,
     verbose: bool = False,
 ):
-    # TODO: The 'RDKFingerprint()' function contains some additional arguments:
+    # Ref.: https://rdkit.org/docs/source/rdkit.Chem.rdmolops.html
+    # Function: rdmolops.RDKFingerprint()
+    # Note: The following arguments exist but are not used in this wrapper:
     #   - atomInvariants
     #   - fromAtoms
     #   - atomBits
     #   - bitInfo
     
-    out = []
-
     if not verbose:
         rdBase.DisableLog("rdApp.*")
     try:
-        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
-            molecule_list = [molecule_list]
-        if len(molecule_list) == 0:
-            return []
-        molecules = convert_to_molecules(
-            molecule_list,
-            verbose=verbose,
-            
-        )
+        out = []
+        molecules = parse_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
-                out.append(None)
+                out.append([-1] * fpSize) # '-1' marks invalid molecules for R
             else:
-                # https://rdkit.org/docs/source/rdkit.Chem.rdmolops.html
                 fp = rdmolops.RDKFingerprint(
                     molecule,
                     minPath=minPath,
@@ -92,7 +79,6 @@ def calculate_rdkit_fps(
     return out
 
 
-
 def calculate_morgan_fps(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     radius: int = 3,
@@ -103,16 +89,15 @@ def calculate_morgan_fps(
     includeRingMembership: bool = True,
     verbose: bool = False,
 ):
-    # TODO: The 'GetMorganGenerator()' function contains some additional
-    # arguments:
+    # Ref.: https://rdkit.org/docs/source/rdkit.Chem.rdFingerprintGenerator.html
+    # Function: generator.GetFingerprint()
+    # Note: The following arguments exist but are not used in this wrapper:
     #   - onlyNonzeroInvariants
     #   - countBounds
     #   - atomInvariantsGenerator
     #   - bondInvariantsGenerator
     #   - includeRedundantEnvironments
-  
-    out = []
-
+    
     if not verbose:
         rdBase.DisableLog("rdApp.*")
     try:
@@ -124,25 +109,17 @@ def calculate_morgan_fps(
             useBondTypes=useBondTypes,
             includeRingMembership=includeRingMembership
         )
-        if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
-            molecule_list = [molecule_list]
-        if len(molecule_list) == 0:
-            return []
-        molecules = convert_to_molecules(
-            molecule_list,
-            verbose=verbose,
-            
-        )
+        
+        out = []
+        molecules = parse_molecules(molecule_list)
         for molecule in molecules:
             if molecule is None:
-                out.append(None)
+                out.append([-1] * fpSize) # '-1' marks invalid molecules for R
             else:
-                # https://rdkit.org/docs/source/rdkit.Chem.rdFingerprintGenerator.html
                 fp = generator.GetFingerprint(molecule)
                 out.append(list(fp))
     finally:
         if not verbose:
             rdBase.EnableLog("rdApp.*")
     return out
-
 

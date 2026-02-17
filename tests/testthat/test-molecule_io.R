@@ -1,6 +1,7 @@
 test_that("ParseMolecules()", {
   skip_on_cran() # RDKit (Python module) is unlikely available on CRAN machines
   SkipIfNoRdkit()
+  .DisableRdkitWarnings()
   mols <- ParseMolecules(c("C???", "C"))
   expect_true(is.null(mols[[1L]]))
   expect_true(inherits(mols[[2L]], "rdkit.Chem.rdchem.Mol"))
@@ -8,6 +9,7 @@ test_that("ParseMolecules()", {
     ConvertToSmiles(mols),
     c(NA_character_, "C")
   )
+  .EnableRdkitWarnings()
 })
 
 

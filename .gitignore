@@ -3,9 +3,10 @@
 .Rprofile
 .RData
 .Ruserdata
-.Rbuildignore
 *.Rproj
+*.py[cod]
 
+__pycache__
 data-raw
 _local
 archive
