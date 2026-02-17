@@ -8,6 +8,7 @@
 #'     \item{neutral, charged, and radical species;}
 #'     \item{aromatic and aliphatic compounds;}
 #'     \item{molecules containing heteroatoms;}
+#'     \item{isotopically labeled compounds;}
 #'     \item{stereochemistry;}
 #'     \item{species with disconnected fragments.}
 #'   }
