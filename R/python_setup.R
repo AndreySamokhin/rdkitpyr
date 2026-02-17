@@ -168,20 +168,18 @@ GetPythonInfo <- function(verbose = TRUE) {
 
 
 #==============================================================================#
-#' Load Python helper scripts for the package
-#' @importFrom reticulate source_python
+#' Load Python module
+#' @importFrom reticulate py_run_string
+#' @importFrom reticulate import
 #' @noRd
 #==============================================================================#
-.LoadPythonHelpers <- function() {
-  py_modules <- c("descriptors.py",
-                  "fingerprints.py",
-                  "molecule_io.py",
-                  "utils.py")
-  for (py_module in py_modules) {
-    path <- system.file("python", py_module, package = "rdkitpyr")
-    normalized_path <- normalizePath(path, mustWork = TRUE)
-    reticulate::source_python(normalized_path, convert = FALSE)
-  }
+.LoadPythonModule <- function() {
+  # The 'insert(0, path)' has higher prioriy over 'append(path)', so it prevents
+  # conflicts and ensures that the module will be loaded.
+  py_module_path <- system.file("python", package = "rdkitpyr")
+  py_script <- sprintf("import sys; sys.path.insert(0, '%s')", py_module_path)
+  reticulate::py_run_string(py_script)
+  the$py_module <- reticulate::import("rdkitpyr", convert = FALSE)
   return(invisible(NULL))
 }
 
@@ -212,7 +210,7 @@ GetPythonInfo <- function(verbose = TRUE) {
   }
   .VerifyPythonVersion()
   .VerifyPythonPackageVersions()
-  .LoadPythonHelpers()
+  .LoadPythonModule()
   the$py_ready <- TRUE
   return(invisible(NULL))
 }
