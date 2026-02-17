@@ -173,8 +173,9 @@ GetPythonInfo <- function(verbose = TRUE) {
 #' @noRd
 #==============================================================================#
 .LoadPythonHelpers <- function() {
-  py_modules <- c("molecule_io.py",
-                  "fingerprints.py")
+  py_modules <- c("descriptors.py",
+                  "fingerprints.py",
+                  "molecule_io.py")
   for (py_module in py_modules) {
     path <- system.file("python", py_module, package = "rdkitpyr")
     normalized_path <- normalizePath(path, mustWork = TRUE)
