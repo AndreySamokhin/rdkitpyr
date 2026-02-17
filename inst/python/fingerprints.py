@@ -1,5 +1,6 @@
 from rdkit import Chem
 from rdkit.Chem import MACCSkeys, rdmolops, rdFingerprintGenerator
+from typing import Sequence
 
 
 
