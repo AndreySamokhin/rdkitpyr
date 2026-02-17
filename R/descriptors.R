@@ -1,4 +1,121 @@
 #==============================================================================#
+#' Calculate all RDKit molecular descriptors
+#'
+#' @description
+#'   Calculate all molecular descriptors available in RDKit for a set of
+#'   molecules.
+#'
+#'   The descriptors are calculated using the \code{CalcMolDescriptors()}
+#'   function from the \code{Descriptors} module in RDKit.
+#'
+#'   The set of returned descriptors may depend on the installed RDKit version.
+#'
+#'   Each molecule is represented by a full set of descriptor values returned
+#'   as a data frame. Invalid molecules are represented by rows containing
+#'   \code{NA} values. Row order is preserved so that the output aligns with
+#'   the input.
+#'
+#' @param mols
+#'   A character vector of SMILES or InChI strings, or a list of RDKit
+#'   Mol objects.
+#' @inheritParams ParseMolecules
+#'
+#' @return
+#'   A data frame with one row per molecule and one column per descriptor.
+#'   Elements corresponding to invalid molecules are returned as \code{NA}.
+#'   Original RDKit descriptor names are used.
+#'
+#'   Additionally, the \code{"valid"} attribute is attached to indicate which
+#'   molecules were successfully processed.
+#'
+#' @examples
+#'   # Calculate all RDKit descriptors
+#'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
+#'   desc <- CalculateAllDescriptors(smiles)
+#'
+#'   # Inspect names of first three descriptors
+#'   names(desc)[1:3]
+#'   #> "MaxAbsEStateIndex" "MaxEStateIndex" "MinAbsEStateIndex"
+#'
+#'   # Display Molecular weight, LogP, TPSA, and molar refractivity
+#'   desc[c("MolWt", "MolLogP", "TPSA", "MolMR")]
+#'   #>    MolWt MolLogP  TPSA   MolMR
+#'   #> 1 46.069 -0.0014 20.23 12.7598
+#'   #> 2 78.114  1.6866  0.00 26.4420
+#'   #> 3     NA      NA    NA      NA
+#'
+#'   # Check which molecules were successfully processed
+#'   attr(desc, "valid")
+#'   #> TRUE TRUE FALSE
+#'
+#' @importFrom reticulate py
+#' @importFrom reticulate py_to_r
+#'
+#' @export
+#==============================================================================#
+CalculateAllDescriptors <- function(mols,
+                                    verbose = FALSE) {
+
+  .EnsurePythonReady()
+
+
+  #--[ Check input arguments ]--------------------------------------------------
+
+  # 'mols'
+  if ((!is.character(mols) || length(mols) == 0L) &&
+      (!is.list(mols) || length(mols) == 0L ||
+       (!is.null(mols[[1L]]) &&
+        !inherits(mols[[1L]], "rdkit.Chem.rdchem.Mol")))) {
+    stop("'mols' must be a character vector (SMILES or InChI) ",
+         "or a list of RDKit Mol objects.")
+  }
+
+  # 'verbose'
+  if (!is.logical(verbose) || length(verbose) != 1L) {
+    stop("'verbose' must be a logical value.")
+  }
+
+
+  #--[ Convert to SMILES ]------------------------------------------------------
+
+  py_obj <- reticulate::py$calculate_all_descriptors(
+    as.list(mols),
+    verbose = verbose
+  )
+  desc_list <- reticulate::py_to_r(py_obj)
+  desc_names <- character(0L)
+  for (i in seq_along(desc_list)) {
+    if (length(desc_list[[i]]) > 0L) {
+      desc_names <- names(desc_list[[i]])
+    }
+  }
+  n_descriptors <- length(desc_names)
+  if (n_descriptors == 0L) {
+    stop("All input molecules are invalid. No descriptors were calculated.")
+  }
+  for (i in seq_along(desc_list)) {
+    if (is.null(desc_list[[i]])) {
+      desc_list[[i]] <- rep(NA_real_, n_descriptors)
+      names(desc_list[[i]]) <- desc_names
+    }
+  }
+  descriptors <- as.data.frame(t(vapply(desc_list, function(a1) {
+    vapply(a1, function(a2) {
+      if(is.null(a2)) {
+        return(NA_real_)
+      } else {
+        return(a2)
+      }
+    }, numeric(1L))
+  }, numeric(n_descriptors))))
+  # names(descriptors) <- names(desc_list[[1L]])
+  attr(descriptors, "valid") <- !is.na(descriptors[, 1L])
+  return(descriptors)
+}
+
+
+
+#==============================================================================#
 #' Calculate the exact mass of molecules
 #'
 #' @description
