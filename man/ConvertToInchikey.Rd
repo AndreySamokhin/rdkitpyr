@@ -2,7 +2,7 @@
 % Please edit documentation in R/molecule_io.R
 \name{ConvertToInchikey}
 \alias{ConvertToInchikey}
-\title{Convert molecular representations to InChIKey strings}
+\title{Convert molecules to InChIKey strings}
 \usage{
 ConvertToInchikey(mols, verbose = FALSE)
 }
@@ -18,10 +18,10 @@ A character vector. InChIKey strings. Elements that cannot be converted are
   returned as \code{NA}.
 }
 \description{
-Convert molecular representations to InChIKey strings.
+Convert molecules to InChIKey strings.
 
-  The input must be a character vector of SMILES or InChI strings,
-  or a list of RDKit Mol objects.
+  Conversion of an InChI string to an InChIKey relies on the IUPAC library,
+  allowing conversion without creating intermediate RDKit Mol objects.
 }
 \examples{
 \dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}

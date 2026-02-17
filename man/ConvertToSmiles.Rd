@@ -2,7 +2,7 @@
 % Please edit documentation in R/molecule_io.R
 \name{ConvertToSmiles}
 \alias{ConvertToSmiles}
-\title{Convert molecular representations to SMILES strings}
+\title{Convert molecules to SMILES strings}
 \usage{
 ConvertToSmiles(
   mols,
@@ -36,14 +36,10 @@ A character vector. SMILES strings. Elements that cannot be converted are
   returned as \code{NA}.
 }
 \description{
-Convert molecular representations to SMILES strings.
+Convert molecules to SMILES strings.
 
-  The input must be a character vector of SMILES or InChI strings,
-  or a list of RDKit Mol objects.
-
-  When SMILES strings are provided as input, their representation can
-  be transformed, for example, to canonical SMILES or with stereochemistry
-  omitted.
+  SMILES strings can be provided as input to obtain their canonical form or
+  to remove stereochemistry.
 }
 \examples{
 \dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}

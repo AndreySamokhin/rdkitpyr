@@ -14,9 +14,8 @@ Mol objects.}
 by the RDKit backend. Default is \code{FALSE}.}
 }
 \value{
-A matrix of integers (0/1) with one row per molecule and one column per
-  MACCS key (length 167). Rows corresponding to invalid molecules contain
-  \code{NA}.
+A matrix of integers (0 or 1) with one row per molecule and 167 columns
+  (MACCS keys). Rows corresponding to invalid molecules contain \code{NA}.
 
   Additionally, the \code{"valid"} attribute is attached to indicate which
   molecules were successfully processed.
@@ -27,12 +26,13 @@ Calculate MACCS (Molecular ACCess System) fingerprints for a set of
   the presence or absence of predefined structural features.
 
   The fingerprints are calculated using the \code{GetMACCSKeysFingerprint()}
-  function from the \code{rdMolDescriptors} module in RDKit.
+  function from the \code{rdkit.Chem.rdMolDescriptors} module in RDKit.
 
   Invalid molecules are represented by \code{NA} vectors. Row order is
   preserved so that the output aligns with the input.
 }
 \examples{
+\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Calculate MACCS fingerprints
   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
   fps <- CalculateMaccsFingerprints(smiles)
@@ -44,5 +44,5 @@ Calculate MACCS (Molecular ACCess System) fingerprints for a set of
   # Check which molecules were successfully processed
   attr(fps, "valid")
   #> TRUE TRUE FALSE
-
+\dontshow{\}) # examplesIf}
 }

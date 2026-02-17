@@ -6,36 +6,43 @@ def parse_molecules(
     molecule_strings: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
     sanitize: bool = True,
     removeHs: bool = True,
-    replacements: Optional[dict] = None
+    replacements: Optional[dict] = None,
+    verbose: bool = False
 ):
-    if replacements is None:
-        replacements = {}
-
-    if isinstance(molecule_strings, str) or isinstance(molecule_strings, Chem.Mol):
-        molecule_strings = [molecule_strings]
-    
-    if len(molecule_strings) == 0:
-        return []
+    if not verbose:
+        rdBase.DisableLog("rdApp.*")
+    try:
+        if replacements is None:
+            replacements = {}
         
-    out = []
-    for molecule in molecule_strings:
-        try:
-            if isinstance(molecule, str):
-                if molecule.startswith("InChI="):
-                    mol = Chem.MolFromInchi(
-                        molecule, sanitize=sanitize, removeHs=removeHs
-                    )
+        if isinstance(molecule_strings, str) or isinstance(molecule_strings, Chem.Mol):
+            molecule_strings = [molecule_strings]
+        
+        if len(molecule_strings) == 0:
+            return []
+            
+        out = []
+        for molecule in molecule_strings:
+            try:
+                if isinstance(molecule, str):
+                    if molecule.startswith("InChI="):
+                        mol = Chem.MolFromInchi(
+                            molecule, sanitize=sanitize, removeHs=removeHs
+                        )
+                    else:
+                        mol = Chem.MolFromSmiles(
+                            molecule, sanitize=sanitize, replacements=replacements
+                        )
+                    out.append(mol)
+                elif isinstance(molecule, Chem.Mol):
+                    out.append(molecule)
                 else:
-                    mol = Chem.MolFromSmiles(
-                        molecule, sanitize=sanitize, replacements=replacements
-                    )
-                out.append(mol)
-            elif isinstance(molecule, Chem.Mol):
-                out.append(molecule)
-            else:
+                    out.append(None)
+            except Exception:
                 out.append(None)
-        except Exception:
-            out.append(None)
+    finally:
+        if not verbose:
+            rdBase.EnableLog("rdApp.*")
     return out
 
 
@@ -62,6 +69,7 @@ def convert_to_smiles(
             sanitize=sanitize,
             removeHs=removeHs,
             replacements=replacements,
+            verbose=True,
         )
         
         out = []
@@ -106,6 +114,7 @@ def convert_to_inchi(
             sanitize=sanitize,
             removeHs=removeHs,
             replacements=replacements,
+            verbose=True,
         )
         
         out = []

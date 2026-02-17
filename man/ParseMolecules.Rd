@@ -22,7 +22,7 @@ Parse SMILES and InChI strings into RDKit Mol objects
   (SMILES or InChI) into a list of RDKit Mol objects (Python-backed pointers
   via \code{reticulate}). The resulting objects can be reused in subsequent
   operations without repeated conversion from SMILES or InChI. This is
-  particularly useful when multiple chemoinformatics tasks are performed on
+  particularly useful when multiple cheminformatics tasks are performed on
   the same set of molecules, improving efficiency by avoiding repeated
   parsing steps.
 }

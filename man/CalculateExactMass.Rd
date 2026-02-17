@@ -19,15 +19,15 @@ A numeric vector containing the exact mass for each molecule.
 }
 \description{
 Calculate the exact mass (monoisotopic mass) for a set of molecules.
-  Exact mass is computed based on the most abundant isotopes of each element.
 
   The calculation is performed using the \code{ExactMolWt()} function from
-  the \code{Descriptors} module in RDKit.
+  the \code{rdkit.Chem.Descriptors} module in RDKit.
 }
 \examples{
+\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Calculate exact mass for a set of molecules
   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
   CalculateExactMass(smiles)
   #> 46.04186 78.04695 NA
-
+\dontshow{\}) # examplesIf}
 }

@@ -6,7 +6,7 @@
 #'   molecules.
 #'
 #'   The descriptors are calculated using the \code{CalcMolDescriptors()}
-#'   function from the \code{Descriptors} module in RDKit.
+#'   function from the \code{rdkit.Chem.Descriptors} module in RDKit.
 #'
 #'   The set of returned descriptors may depend on the installed RDKit version.
 #'
@@ -28,7 +28,7 @@
 #'   Additionally, the \code{"valid"} attribute is attached to indicate which
 #'   molecules were successfully processed.
 #'
-#' @examples
+#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
 #'   # Calculate all RDKit descriptors
 #'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
 #'   desc <- CalculateAllDescriptors(smiles)
@@ -101,10 +101,9 @@ CalculateAllDescriptors <- function(mols,
 #'
 #' @description
 #'   Calculate the exact mass (monoisotopic mass) for a set of molecules.
-#'   Exact mass is computed based on the most abundant isotopes of each element.
 #'
 #'   The calculation is performed using the \code{ExactMolWt()} function from
-#'   the \code{Descriptors} module in RDKit.
+#'   the \code{rdkit.Chem.Descriptors} module in RDKit.
 #'
 #' @param mols
 #'   A character vector of SMILES or InChI strings, or a list of RDKit
@@ -115,7 +114,7 @@ CalculateAllDescriptors <- function(mols,
 #'   A numeric vector containing the exact mass for each molecule.
 #'   Elements corresponding to invalid molecules are returned as \code{NA}.
 #'
-#' @examples
+#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
 #'   # Calculate exact mass for a set of molecules
 #'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
 #'   CalculateExactMass(smiles)
@@ -166,11 +165,9 @@ CalculateExactMass <- function(mols,
 #'
 #' @description
 #'   Calculate the molecular weight (average mass) for a set of molecules.
-#'   Molecular weight is computed based on the natural isotopic abundance of
-#'   each element.
 #'
 #'   The calculation is performed using the \code{MolWt()} function from the
-#'   \code{Descriptors} module in RDKit.
+#'   \code{rdkit.Chem.Descriptors} module in RDKit.
 #'
 #' @param mols
 #'   A character vector of SMILES or InChI strings, or a list of RDKit
@@ -181,8 +178,8 @@ CalculateExactMass <- function(mols,
 #'   A numeric vector containing the molecular weight for each molecule.
 #'   Elements corresponding to invalid molecules are returned as \code{NA}.
 #'
-#' @examples
-#'   # Calculate exact mass for a set of molecules
+#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
+#'   # Calculate average molecular weight for a set of molecules
 #'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
 #'   CalculateMolecularWeight(smiles)
 #'   #> 46.069 78.114 NA
