@@ -130,36 +130,45 @@ def convert_to_inchikey(
     replacements: Optional[dict] = None,
     verbose: bool = False,
 ):
-    out = []
-
     if not verbose:
         rdBase.DisableLog("rdApp.*")
+    
+    if replacements is None:
+        replacements = {}
+    
     try:
-
         if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
             molecule_list = [molecule_list]
+            
         if len(molecule_list) == 0:
             return []
+        
+        out = []
         for molecule in molecule_list:
-            if isinstance(molecule, str):
-                if molecule.startswith("InChI="):
-                    out.append(Chem.InchiToInchiKey(molecule))
-                else:
-                    if replacements is None:
-                        replacements = {}
-                    mol = Chem.MolFromSmiles(
-                        molecule, sanitize=sanitize, replacements=replacements
-                    )
-                    if mol is not None:
-                        inchikey = Chem.MolToInchiKey(mol)
-                        out.append(inchikey)
+            try:
+                if isinstance(molecule, str):
+                    if molecule.startswith("InChI="):
+                        inchikey = Chem.InchiToInchiKey(molecule)
+                        if inchikey is None:
+                            out.append("")
+                        else:
+                            out.append(inchikey)
                     else:
-                        out.append(None)
-            elif isinstance(molecule, Chem.Mol):
-                out.append(Chem.MolToInchiKey(molecule))
-            else:
-                out.append(None)
+                        mol = Chem.MolFromSmiles(
+                            molecule, sanitize=sanitize, replacements=replacements
+                        )
+                        if mol is not None:
+                            out.append(Chem.MolToInchiKey(mol))
+                        else:
+                            out.append("")
+                elif isinstance(molecule, Chem.Mol):
+                    out.append(Chem.MolToInchiKey(molecule))
+                else:
+                    out.append("")
+            except Exception:
+                out.append("")
     finally:
         if not verbose:
             rdBase.EnableLog("rdApp.*")
     return out
+

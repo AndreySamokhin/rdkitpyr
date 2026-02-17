@@ -311,14 +311,9 @@ ConvertToInchikey <- function(mols,
   # behavior R vectors are represented as lists explicitly.
 
   py_obj <- reticulate::py$convert_to_inchikey(as.list(mols))
-  inchikey <- vapply(reticulate::py_to_r(py_obj), function(a1) {
-    if(is.null(a1)) {
-      return(NA_character_)
-    } else {
-      return(a1)
-    }
-  }, character(1L), USE.NAMES = FALSE)
-  return(inchikey)
+  out <- reticulate::py_to_r(py_obj)
+  out[out == ""] <- NA_character_
+  return(out)
 }
 
 
