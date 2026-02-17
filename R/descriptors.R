@@ -82,33 +82,9 @@ CalculateAllDescriptors <- function(mols,
     as.list(mols),
     verbose = verbose
   )
-  desc_list <- reticulate::py_to_r(py_obj)
-  desc_names <- character(0L)
-  for (i in seq_along(desc_list)) {
-    if (length(desc_list[[i]]) > 0L) {
-      desc_names <- names(desc_list[[i]])
-    }
-  }
-  n_descriptors <- length(desc_names)
-  if (n_descriptors == 0L) {
-    stop("All input molecules are invalid. No descriptors were calculated.")
-  }
-  for (i in seq_along(desc_list)) {
-    if (is.null(desc_list[[i]])) {
-      desc_list[[i]] <- rep(NA_real_, n_descriptors)
-      names(desc_list[[i]]) <- desc_names
-    }
-  }
-  descriptors <- as.data.frame(t(vapply(desc_list, function(a1) {
-    vapply(a1, function(a2) {
-      if(is.null(a2)) {
-        return(NA_real_)
-      } else {
-        return(a2)
-      }
-    }, numeric(1L))
-  }, numeric(n_descriptors))))
-  # names(descriptors) <- names(desc_list[[1L]])
+  temp <- reticulate::py_to_r(py_obj)
+  n_descriptors <- length(temp[[1L]])
+  descriptors <- as.data.frame(t(vapply(temp, unlist, numeric(n_descriptors))))
   attr(descriptors, "valid") <- !is.na(descriptors[, 1L])
   return(descriptors)
 }

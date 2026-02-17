@@ -22,7 +22,9 @@ def calculate_all_descriptors(
         )
         for molecule in molecules:
             if molecule is None:
-                out.append(None)
+                out.append(
+                    {name: float('nan') for name, _ in Descriptors.descList}
+                )
             else:
                 # https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
                 out.append(

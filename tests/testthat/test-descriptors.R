@@ -6,14 +6,13 @@ test_that("CalculateAllDescriptors()", {
   expect_equal(desc$MolWt, CalculateMolecularWeight(test_compounds$smiles))
   expect_equal(desc$ExactMolWt, CalculateExactMass(test_compounds$smiles))
 
-  expect_identical(
-    as.integer(CalculateAllDescriptors(c("C???", "C"))$MolWt),
-    c(NA_integer_, 16L)
-  )
-  expect_error(
-    CalculateAllDescriptors(c("C???", "CC???", "CCC???")),
-    "All input molecules are invalid."
-  )
+  desc <- CalculateAllDescriptors(c("C???", "C"))
+  expect_identical(as.integer(desc$MolWt), c(NA_integer_, 16L))
+
+  desc <- CalculateAllDescriptors(c("C???", "CC???", "CCC???"))
+  expect_true(is.data.frame(desc))
+  expect_true(all(is.na(desc)))
+  expect_true(all(c("MolWt", "MolLogP", "TPSA", "MolMR") %in% names(desc)))
 })
 
 
