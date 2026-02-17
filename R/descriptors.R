@@ -156,14 +156,9 @@ CalculateExactMass <- function(mols,
     as.list(mols),
     verbose = verbose
   )
-  exact_mass <- vapply(reticulate::py_to_r(py_obj), function(a1) {
-    if(is.null(a1)) {
-      return(NA_real_)
-    } else {
-      return(a1)
-    }
-  }, numeric(1L), USE.NAMES = FALSE)
-  return(exact_mass)
+  out <- reticulate::py_to_r(py_obj)
+  out[is.nan(out)] <- NA_real_
+  return(out)
 }
 
 
@@ -228,14 +223,9 @@ CalculateMolecularWeight <- function(mols,
     as.list(mols),
     verbose = verbose
   )
-  mol_weights <- vapply(reticulate::py_to_r(py_obj), function(a1) {
-    if(is.null(a1)) {
-      return(NA_real_)
-    } else {
-      return(a1)
-    }
-  }, numeric(1L), USE.NAMES = FALSE)
-  return(mol_weights)
+  out <- reticulate::py_to_r(py_obj)
+  out[is.nan(out)] <- NA_real_
+  return(out)
 }
 
 

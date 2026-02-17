@@ -60,7 +60,7 @@ def calculate_exact_mass(
         )
         for molecule in molecules:
             if molecule is None:
-                out.append(None)
+                out.append(float('nan'))
             else:
                 # https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
                 out.append(Descriptors.ExactMolWt(molecule))
@@ -90,7 +90,7 @@ def calculate_molecular_weight(
         )
         for molecule in molecules:
             if molecule is None:
-                out.append(None)
+                out.append(float('nan'))
             else:
                 # https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
                 out.append(Descriptors.MolWt(molecule))
