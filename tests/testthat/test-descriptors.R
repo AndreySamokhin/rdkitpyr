@@ -7,7 +7,8 @@ test_that("CalculateAllDescriptors()", {
   expect_equal(desc$ExactMolWt, CalculateExactMass(test_compounds$smiles))
 
   desc <- CalculateAllDescriptors(c("C???", "C"))
-  expect_identical(as.integer(desc$MolWt), c(NA_integer_, 16L))
+  expect_identical(desc$MolWt[[1L]], NA_real_)
+  expect_identical(as.integer(desc$MolWt[[2L]]), 16L)
 
   desc <- CalculateAllDescriptors(c("C???", "CC???", "CCC???"))
   expect_true(is.data.frame(desc))
