@@ -1,4 +1,6 @@
 test_that("CalculateAllDescriptors()", {
+  skip_on_cran() # RDKit (Python module) is unlikely available on CRAN machines
+  SkipIfNoRdkit()
   desc <- CalculateAllDescriptors(test_compounds$smiles)
   expect_true(is.data.frame(desc))
   expect_identical(nrow(desc), 10L)
@@ -18,6 +20,8 @@ test_that("CalculateAllDescriptors()", {
 
 
 test_that("CalculateExactMass()", {
+  skip_on_cran() # RDKit (Python module) is unlikely available on CRAN machines
+  SkipIfNoRdkit()
   expect_equal(
     CalculateExactMass(test_compounds$smiles),
     test_compounds$exact_mass
@@ -27,6 +31,8 @@ test_that("CalculateExactMass()", {
 
 
 test_that("CalculateMolecularWeight()", {
+  skip_on_cran() # RDKit (Python module) is unlikely available on CRAN machines
+  SkipIfNoRdkit()
   expect_equal(
     CalculateMolecularWeight(test_compounds$smiles),
     test_compounds$molecular_weight,
