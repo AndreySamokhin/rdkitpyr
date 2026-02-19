@@ -1,4 +1,4 @@
-from rdkit import Chem, rdBase
+from rdkit import Chem
 from typing import Sequence, Optional
 
 

@@ -1,4 +1,4 @@
-from rdkit import Chem, rdBase
+from rdkit import Chem
 from rdkit.Chem import Descriptors
 from typing import Sequence
 from .molecule_io import parse_molecules
