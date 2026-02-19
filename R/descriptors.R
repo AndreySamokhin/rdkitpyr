@@ -77,10 +77,11 @@ CalculateAllDescriptors <- function(mols,
 
   #--[ Convert to SMILES ]------------------------------------------------------
 
-  py_obj <- the$py_module$calculate_all_descriptors(
-    as.list(mols),
-    verbose = verbose
-  )
+  if (!verbose) {
+    the$py_module$disable_rdkit_warnings()
+    on.exit(the$py_module$enable_rdkit_warnings(), add = TRUE)
+  }
+  py_obj <- the$py_module$calculate_all_descriptors(as.list(mols))
   temp <- reticulate::py_to_r(py_obj)
   n_descriptors <- length(temp[[1L]])
   descriptors <- as.data.frame(
@@ -149,10 +150,11 @@ CalculateExactMass <- function(mols,
 
   #--[ Convert to SMILES ]------------------------------------------------------
 
-  py_obj <- the$py_module$calculate_exact_mass(
-    as.list(mols),
-    verbose = verbose
-  )
+  if (!verbose) {
+    the$py_module$disable_rdkit_warnings()
+    on.exit(the$py_module$enable_rdkit_warnings(), add = TRUE)
+  }
+  py_obj <- the$py_module$calculate_exact_mass(as.list(mols))
   out <- reticulate::py_to_r(py_obj)
   out[is.nan(out)] <- NA_real_
   return(out)
@@ -213,10 +215,11 @@ CalculateMolecularWeight <- function(mols,
 
   #--[ Convert to SMILES ]------------------------------------------------------
 
-  py_obj <- the$py_module$calculate_molecular_weight(
-    as.list(mols),
-    verbose = verbose
-  )
+  if (!verbose) {
+    the$py_module$disable_rdkit_warnings()
+    on.exit(the$py_module$enable_rdkit_warnings(), add = TRUE)
+  }
+  py_obj <- the$py_module$calculate_molecular_weight(as.list(mols))
   out <- reticulate::py_to_r(py_obj)
   out[is.nan(out)] <- NA_real_
   return(out)

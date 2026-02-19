@@ -66,10 +66,11 @@ CalculateMaccsFingerprints <- function(mols,
 
   #--[ Calculate fingerprints ]-------------------------------------------------
 
-  py_obj <- the$py_module$calculate_maccs_fps(
-    as.list(mols),
-    verbose = verbose
-  )
+  if (!verbose) {
+    the$py_module$disable_rdkit_warnings()
+    on.exit(the$py_module$enable_rdkit_warnings(), add = TRUE)
+  }
+  py_obj <- the$py_module$calculate_maccs_fps(as.list(mols))
   fp_size <- 167L # hard-coded length for MACCS fingerprint
   out <- t(vapply(reticulate::py_to_r(py_obj), unlist, integer(fp_size)))
   out[out == -1L] <- NA_integer_
@@ -227,6 +228,10 @@ CalculateRdkitFingerprints <- function(mols,
 
   #--[ Calculate fingerprints ]-------------------------------------------------
 
+  if (!verbose) {
+    the$py_module$disable_rdkit_warnings()
+    on.exit(the$py_module$enable_rdkit_warnings(), add = TRUE)
+  }
   py_obj <- the$py_module$calculate_rdkit_fps(
     as.list(mols),
     minPath = as.integer(min_path),
@@ -237,8 +242,7 @@ CalculateRdkitFingerprints <- function(mols,
     tgtDensity = target_density,
     minSize = as.integer(min_size),
     branchedPaths = branched_paths,
-    useBondOrder = use_bond_order,
-    verbose = verbose
+    useBondOrder = use_bond_order
   )
   out <- t(vapply(reticulate::py_to_r(py_obj), unlist, integer(fp_size)))
   out[out == -1L] <- NA_integer_
@@ -369,6 +373,10 @@ CalculateMorganFingerprints <- function(mols,
 
   #--[ Calculate fingerprints ]-------------------------------------------------
 
+  if (!verbose) {
+    the$py_module$disable_rdkit_warnings()
+    on.exit(the$py_module$enable_rdkit_warnings(), add = TRUE)
+  }
   py_obj <- the$py_module$calculate_morgan_fps(
     as.list(mols),
     radius = as.integer(radius),
@@ -376,8 +384,7 @@ CalculateMorganFingerprints <- function(mols,
     countSimulation = count_simulation,
     includeChirality = include_chirality,
     useBondTypes = use_bond_types,
-    includeRingMembership = include_ring_membership,
-    verbose = verbose
+    includeRingMembership = include_ring_membership
   )
   out <- t(vapply(reticulate::py_to_r(py_obj), unlist, integer(fp_size)))
   out[out == -1L] <- NA_integer_
