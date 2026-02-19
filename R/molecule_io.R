@@ -83,12 +83,12 @@ ParseMolecules <- function(mols,
 #'   A logical value. If \code{TRUE}, include stereochemistry in the output.
 #' @param kekule
 #'   A logical value. If \code{TRUE}, kekulize aromatic bonds.
+#' @param canonical
+#'   A logical value. If \code{TRUE}, generate canonical SMILES.
 #' @param explicit_bonds
 #'   A logical value. If \code{TRUE}, make all bonds explicit.
 #' @param explicit_hydrogens
 #'   A logical value. If \code{TRUE}, make all hydrogens explicit.
-#' @param canonical
-#'   A logical value. If \code{TRUE}, generate canonical SMILES.
 #'
 #' @return
 #'   A character vector. SMILES strings. Elements that cannot be converted are
@@ -115,9 +115,9 @@ ParseMolecules <- function(mols,
 ConvertToSmiles <- function(mols,
                             isomeric = TRUE,
                             kekule = FALSE,
+                            canonical = TRUE,
                             explicit_bonds = FALSE,
                             explicit_hydrogens = FALSE,
-                            canonical = TRUE,
                             verbose = FALSE) {
 
   .EnsurePythonReady()
@@ -144,6 +144,11 @@ ConvertToSmiles <- function(mols,
     stop("'kekule' must be a logical value.")
   }
 
+  # 'canonical'
+  if (!is.logical(canonical) || length(canonical) != 1L) {
+    stop("'canonical' must be a logical value.")
+  }
+
   # 'explicit_bonds'
   if (!is.logical(explicit_bonds) || length(explicit_bonds) != 1L) {
     stop("'explicit_bonds' must be a logical value.")
@@ -152,11 +157,6 @@ ConvertToSmiles <- function(mols,
   # 'explicit_hydrogens'
   if (!is.logical(explicit_hydrogens) || length(explicit_hydrogens) != 1L) {
     stop("'explicit_hydrogens' must be a logical value.")
-  }
-
-  # 'canonical'
-  if (!is.logical(canonical) || length(canonical) != 1L) {
-    stop("'canonical' must be a logical value.")
   }
 
   # 'verbose'
@@ -175,9 +175,9 @@ ConvertToSmiles <- function(mols,
     as.list(mols),
     isomericSmiles = isomeric,
     kekuleSmiles = kekule,
+    canonical = canonical,
     allBondsExplicit = explicit_bonds,
-    allHsExplicit = explicit_hydrogens,
-    canonical = canonical
+    allHsExplicit = explicit_hydrogens
   )
   out <- reticulate::py_to_r(py_obj)
   out[out == ""] <- NA_character_
