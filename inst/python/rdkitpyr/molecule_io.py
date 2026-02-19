@@ -45,26 +45,21 @@ def parse_molecules(
 
 def convert_to_smiles(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
-    sanitize: bool = True,
-    removeHs: bool = True,
-    replacements: Optional[dict] = None,
     isomericSmiles: bool = True,
     kekuleSmiles: bool = False,
-    rootedAtAtom: int = -1,
     canonical: bool = True,
     allBondsExplicit: bool = False,
     allHsExplicit: bool = False,
-    doRandom: bool = False,
-    ignoreAtomMapNumbers: bool = False,
 ):
-    molecules = parse_molecules(
-        molecule_list,
-        sanitize=sanitize,
-        removeHs=removeHs,
-        replacements=replacements,
-    )
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.rdmolfiles.html
+    # Function: rdmolfiles.MolToSmiles()
+    # Note: The following arguments exist but are not used in this wrapper:
+    #   - rootedAtAtom
+    #   - doRandom
+    #   - ignoreAtomMapNumbers 
     
     out = []
+    molecules = parse_molecules(molecule_list)
     for molecule in molecules:
         if molecule is None:
             out.append("")
@@ -75,12 +70,9 @@ def convert_to_smiles(
                         molecule,
                         isomericSmiles=isomericSmiles,
                         kekuleSmiles=kekuleSmiles,
-                        rootedAtAtom=rootedAtAtom,
                         canonical=canonical,
                         allBondsExplicit=allBondsExplicit,
                         allHsExplicit=allHsExplicit,
-                        doRandom=doRandom,
-                        ignoreAtomMapNumbers=ignoreAtomMapNumbers,
                     )
                 )
             except Exception:
