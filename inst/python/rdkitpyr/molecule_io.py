@@ -4,12 +4,20 @@ from typing import Sequence, Optional
 
 def parse_molecules(
     molecule_strings: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
-    sanitize: bool = True,
-    removeHs: bool = True,
-    replacements: Optional[dict] = None,
 ):
-    if replacements is None:
-        replacements = {}
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.inchi.html
+    # Function: inchi.MolFromInchi()
+    # Note: The following arguments exist but are not used in this wrapper:
+    #   - sanitize
+    #   - removeHs
+    #   - logLevel
+    #   - treatWarningAsError
+
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.rdmolfiles.html
+    # Function: rdmolfiles.MolFromSmiles()
+    # Note: The following arguments exist but are not used in this wrapper:
+    #   - sanitize
+    #   - replacements
     
     if isinstance(molecule_strings, str) or isinstance(molecule_strings, Chem.Mol):
         molecule_strings = [molecule_strings]
@@ -22,13 +30,9 @@ def parse_molecules(
         try:
             if isinstance(molecule, str):
                 if molecule.startswith("InChI="):
-                    mol = Chem.MolFromInchi(
-                        molecule, sanitize=sanitize, removeHs=removeHs
-                    )
+                    mol = Chem.MolFromInchi(molecule)
                 else:
-                    mol = Chem.MolFromSmiles(
-                        molecule, sanitize=sanitize, replacements=replacements
-                    )
+                    mol = Chem.MolFromSmiles(molecule)
                 out.append(mol)
             elif isinstance(molecule, Chem.Mol):
                 out.append(molecule)
