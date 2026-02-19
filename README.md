@@ -19,6 +19,11 @@ exception handling.
 ## Installation
 
 ``` r
+# Install 'rdkitpyr' from CRAN:
+install.packages("rdkitpyr")
+```
+
+``` r
 # Install 'rdkitpyr' from GitHub:
 library(devtools)
 install_github("andreysamokhin/rdkitpyr")
