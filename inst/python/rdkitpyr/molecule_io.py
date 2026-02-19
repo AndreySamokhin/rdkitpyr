@@ -82,18 +82,15 @@ def convert_to_smiles(
 
 def convert_to_inchi(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
-    sanitize: bool = True,
-    removeHs: bool = True,
-    replacements: Optional[dict] = None,
 ):
-    molecules = parse_molecules(
-        molecule_list,
-        sanitize=sanitize,
-        removeHs=removeHs,
-        replacements=replacements,
-    )
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.inchi.html
+    # Function: inchi.MolToInchi()
+    # Note: The following arguments exist but are not used in this wrapper:
+    #   - logLevel
+    #   - treatWarningAsError
     
     out = []
+    molecules = parse_molecules(molecule_list)
     for molecule in molecules:
         if molecule is None:
             out.append("")
