@@ -39,16 +39,28 @@
 ParseMolecules <- function(mols,
                            verbose = FALSE) {
   .EnsurePythonReady()
+
+
+  #--[ Check input arguments ]--------------------------------------------------
+
+  # 'mols'
   if (!is.character(mols) || length(mols) == 0L) {
     stop("'mols' must be a character vector of SMILES or InChI strings.")
   }
+
+  # 'verbose'
   if (!is.logical(verbose) || length(verbose) != 1L) {
     stop("'verbose' must be a logical value.")
   }
-  py_obj <- the$py_module$parse_molecules(
-    as.list(mols),
-    verbose = verbose
-  )
+
+
+  #--[ Parse molecules ]--------------------------------------------------------
+
+  if (!verbose) {
+    the$py_module$disable_rdkit_warnings()
+    on.exit(the$py_module$enable_rdkit_warnings(), add = TRUE)
+  }
+  py_obj <- the$py_module$parse_molecules(as.list(mols))
   return(reticulate::py_to_r(py_obj))
 }
 
@@ -155,14 +167,17 @@ ConvertToSmiles <- function(mols,
 
   #--[ Convert to SMILES ]------------------------------------------------------
 
+  if (!verbose) {
+    the$py_module$disable_rdkit_warnings()
+    on.exit(the$py_module$enable_rdkit_warnings(), add = TRUE)
+  }
   py_obj <- the$py_module$convert_to_smiles(
     as.list(mols),
     isomericSmiles = isomeric,
     kekuleSmiles = kekule,
     allBondsExplicit = explicit_bonds,
     allHsExplicit = explicit_hydrogens,
-    canonical = canonical,
-    verbose = verbose
+    canonical = canonical
   )
   out <- reticulate::py_to_r(py_obj)
   out[out == ""] <- NA_character_
@@ -230,10 +245,11 @@ ConvertToInchi <- function(mols,
 
   #--[ Convert Smiles ]---------------------------------------------------------
 
-  py_obj <- the$py_module$convert_to_inchi(
-    as.list(mols),
-    verbose = verbose
-  )
+  if (!verbose) {
+    the$py_module$disable_rdkit_warnings()
+    on.exit(the$py_module$enable_rdkit_warnings(), add = TRUE)
+  }
+  py_obj <- the$py_module$convert_to_inchi(as.list(mols))
   out <- reticulate::py_to_r(py_obj)
   out[out == ""] <- NA_character_
   return(out)
@@ -302,10 +318,11 @@ ConvertToInchikey <- function(mols,
 
   #--[ Convert InchI ]----------------------------------------------------------
 
-  py_obj <- the$py_module$convert_to_inchikey(
-    as.list(mols),
-    verbose = verbose
-  )
+  if (!verbose) {
+    the$py_module$disable_rdkit_warnings()
+    on.exit(the$py_module$enable_rdkit_warnings(), add = TRUE)
+  }
+  py_obj <- the$py_module$convert_to_inchikey(as.list(mols))
   out <- reticulate::py_to_r(py_obj)
   out[out == ""] <- NA_character_
   return(out)
