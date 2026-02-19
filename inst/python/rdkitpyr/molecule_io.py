@@ -104,14 +104,9 @@ def convert_to_inchi(
 
 def convert_to_inchikey(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
-    sanitize: bool = True,
-    replacements: Optional[dict] = None,
 ):
-    if replacements is None:
-        replacements = {}
     if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
         molecule_list = [molecule_list]
-        
     if len(molecule_list) == 0:
         return []
     
@@ -126,9 +121,7 @@ def convert_to_inchikey(
                     else:
                         out.append(inchikey)
                 else:
-                    mol = Chem.MolFromSmiles(
-                        molecule, sanitize=sanitize, replacements=replacements
-                    )
+                    mol = Chem.MolFromSmiles(molecule)
                     if mol is not None:
                         out.append(Chem.MolToInchiKey(mol))
                     else:
