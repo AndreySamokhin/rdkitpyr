@@ -8,9 +8,9 @@ ConvertToSmiles(
   mols,
   isomeric = TRUE,
   kekule = FALSE,
+  canonical = TRUE,
   explicit_bonds = FALSE,
   explicit_hydrogens = FALSE,
-  canonical = TRUE,
   verbose = FALSE
 )
 }
@@ -22,11 +22,11 @@ Mol objects.}
 
 \item{kekule}{A logical value. If \code{TRUE}, kekulize aromatic bonds.}
 
+\item{canonical}{A logical value. If \code{TRUE}, generate canonical SMILES.}
+
 \item{explicit_bonds}{A logical value. If \code{TRUE}, make all bonds explicit.}
 
 \item{explicit_hydrogens}{A logical value. If \code{TRUE}, make all hydrogens explicit.}
-
-\item{canonical}{A logical value. If \code{TRUE}, generate canonical SMILES.}
 
 \item{verbose}{A logical value. If \code{TRUE}, display warning and error messages emitted
 by the RDKit backend. Default is \code{FALSE}.}

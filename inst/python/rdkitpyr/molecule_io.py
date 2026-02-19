@@ -1,15 +1,23 @@
-from rdkit import Chem, rdBase
+from rdkit import Chem
 from typing import Sequence, Optional
 
 
 def parse_molecules(
     molecule_strings: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
-    sanitize: bool = True,
-    removeHs: bool = True,
-    replacements: Optional[dict] = None,
 ):
-    if replacements is None:
-        replacements = {}
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.inchi.html
+    # Function: inchi.MolFromInchi()
+    # Note: The following arguments exist but are not used in this wrapper:
+    #   - sanitize
+    #   - removeHs
+    #   - logLevel
+    #   - treatWarningAsError
+
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.rdmolfiles.html
+    # Function: rdmolfiles.MolFromSmiles()
+    # Note: The following arguments exist but are not used in this wrapper:
+    #   - sanitize
+    #   - replacements
     
     if isinstance(molecule_strings, str) or isinstance(molecule_strings, Chem.Mol):
         molecule_strings = [molecule_strings]
@@ -22,13 +30,9 @@ def parse_molecules(
         try:
             if isinstance(molecule, str):
                 if molecule.startswith("InChI="):
-                    mol = Chem.MolFromInchi(
-                        molecule, sanitize=sanitize, removeHs=removeHs
-                    )
+                    mol = Chem.MolFromInchi(molecule)
                 else:
-                    mol = Chem.MolFromSmiles(
-                        molecule, sanitize=sanitize, replacements=replacements
-                    )
+                    mol = Chem.MolFromSmiles(molecule)
                 out.append(mol)
             elif isinstance(molecule, Chem.Mol):
                 out.append(molecule)
@@ -41,26 +45,21 @@ def parse_molecules(
 
 def convert_to_smiles(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
-    sanitize: bool = True,
-    removeHs: bool = True,
-    replacements: Optional[dict] = None,
     isomericSmiles: bool = True,
     kekuleSmiles: bool = False,
-    rootedAtAtom: int = -1,
     canonical: bool = True,
     allBondsExplicit: bool = False,
     allHsExplicit: bool = False,
-    doRandom: bool = False,
-    ignoreAtomMapNumbers: bool = False,
 ):
-    molecules = parse_molecules(
-        molecule_list,
-        sanitize=sanitize,
-        removeHs=removeHs,
-        replacements=replacements,
-    )
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.rdmolfiles.html
+    # Function: rdmolfiles.MolToSmiles()
+    # Note: The following arguments exist but are not used in this wrapper:
+    #   - rootedAtAtom
+    #   - doRandom
+    #   - ignoreAtomMapNumbers 
     
     out = []
+    molecules = parse_molecules(molecule_list)
     for molecule in molecules:
         if molecule is None:
             out.append("")
@@ -71,12 +70,9 @@ def convert_to_smiles(
                         molecule,
                         isomericSmiles=isomericSmiles,
                         kekuleSmiles=kekuleSmiles,
-                        rootedAtAtom=rootedAtAtom,
                         canonical=canonical,
                         allBondsExplicit=allBondsExplicit,
                         allHsExplicit=allHsExplicit,
-                        doRandom=doRandom,
-                        ignoreAtomMapNumbers=ignoreAtomMapNumbers,
                     )
                 )
             except Exception:
@@ -86,18 +82,15 @@ def convert_to_smiles(
 
 def convert_to_inchi(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
-    sanitize: bool = True,
-    removeHs: bool = True,
-    replacements: Optional[dict] = None,
 ):
-    molecules = parse_molecules(
-        molecule_list,
-        sanitize=sanitize,
-        removeHs=removeHs,
-        replacements=replacements,
-    )
+    # Ref.: https://www.rdkit.org/docs/source/rdkit.Chem.inchi.html
+    # Function: inchi.MolToInchi()
+    # Note: The following arguments exist but are not used in this wrapper:
+    #   - logLevel
+    #   - treatWarningAsError
     
     out = []
+    molecules = parse_molecules(molecule_list)
     for molecule in molecules:
         if molecule is None:
             out.append("")
@@ -111,14 +104,9 @@ def convert_to_inchi(
 
 def convert_to_inchikey(
     molecule_list: str | Chem.Mol | Sequence[str] | Sequence[Chem.Mol],
-    sanitize: bool = True,
-    replacements: Optional[dict] = None,
 ):
-    if replacements is None:
-        replacements = {}
     if isinstance(molecule_list, str) or isinstance(molecule_list, Chem.Mol):
         molecule_list = [molecule_list]
-        
     if len(molecule_list) == 0:
         return []
     
@@ -133,9 +121,7 @@ def convert_to_inchikey(
                     else:
                         out.append(inchikey)
                 else:
-                    mol = Chem.MolFromSmiles(
-                        molecule, sanitize=sanitize, replacements=replacements
-                    )
+                    mol = Chem.MolFromSmiles(molecule)
                     if mol is not None:
                         out.append(Chem.MolToInchiKey(mol))
                     else:
