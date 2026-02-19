@@ -1,7 +1,7 @@
 Type: Package
 Package: rdkitpyr
 Title: Task-Oriented Cheminformatics in R Using the RDKit Python Interface
-Version: 0.1.0.9008
+Version: 0.2.0
 Authors@R: person("Andrey", "Samokhin",
                   email = "andrey.s.samokhin@gmail.com",
                   role = c("aut", "cre", "cph"),
