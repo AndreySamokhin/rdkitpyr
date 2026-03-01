@@ -7,7 +7,7 @@ R-friendly, task-oriented functions without mirroring RDKit's native API. The
 package motto is *"Focus on chemistry tasks in R, without diving into RDKit
 internals"*.
 
-The name `rdkitpyr` (pronounced `/ar-dee-kit-pier/`) highlights its nested
+The name `rdkitpyr` (pronounced `/ar-dee-kit-peer/`) highlights its nested
 structure (from R to Python to the RDKit C++ library) and its role as an R-side
 peer to RDKit rather than a direct wrapper.
 
