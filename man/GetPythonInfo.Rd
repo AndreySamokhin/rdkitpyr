@@ -27,7 +27,7 @@ Get details about the Python interpreter, \code{numpy} and \code{rdkit}
   packages.
 }
 \examples{
-\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
+\dontshow{if (.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Print information about the Python environment
   GetPythonInfo()
 

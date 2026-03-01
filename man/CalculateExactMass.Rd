@@ -24,7 +24,7 @@ Calculate the exact mass (monoisotopic mass) for a set of molecules.
   the \code{rdkit.Chem.Descriptors} module in RDKit.
 }
 \examples{
-\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
+\dontshow{if (.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Calculate exact mass for a set of molecules
   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
   CalculateExactMass(smiles)

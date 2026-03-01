@@ -25,7 +25,7 @@ Convert molecules to InChI strings.
   test RDKit's consistency with challenging molecules.
 }
 \examples{
-\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
+\dontshow{if (.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Convert a vector of SMILES to InChI identifiers
   smiles <- c("CC", "CCC")
   ConvertToInchi(smiles)

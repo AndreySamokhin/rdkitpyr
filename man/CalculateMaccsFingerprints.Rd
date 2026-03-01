@@ -32,7 +32,7 @@ Calculate MACCS (Molecular ACCess System) fingerprints for a set of
   preserved so that the output aligns with the input.
 }
 \examples{
-\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
+\dontshow{if (.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Calculate MACCS fingerprints
   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
   fps <- CalculateMaccsFingerprints(smiles)

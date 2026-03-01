@@ -42,7 +42,7 @@ Convert molecules to SMILES strings.
   to remove stereochemistry.
 }
 \examples{
-\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
+\dontshow{if (.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Convert a vector of InChI identifiers to canonical SMILES
   inchi <- c("InChI=1S/C2H6/c1-2/h1-2H3",
              "InChI=1S/C6H6/c1-2-4-6-5-3-1/h1-6H")

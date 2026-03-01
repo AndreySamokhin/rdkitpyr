@@ -36,7 +36,7 @@ Calculate all molecular descriptors available in RDKit for a set of
   the input.
 }
 \examples{
-\dontshow{if (rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
+\dontshow{if (.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Calculate all RDKit descriptors
   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
   desc <- CalculateAllDescriptors(smiles)
