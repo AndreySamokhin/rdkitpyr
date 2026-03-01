@@ -28,7 +28,7 @@
 #'   Additionally, the \code{"valid"} attribute is attached to indicate which
 #'   molecules were successfully processed.
 #'
-#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
+#' @examplesIf .IsRdkitAvailable(initialize = FALSE)
 #'   # Calculate all RDKit descriptors
 #'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
 #'   desc <- CalculateAllDescriptors(smiles)
@@ -115,7 +115,7 @@ CalculateAllDescriptors <- function(mols,
 #'   A numeric vector containing the exact mass for each molecule.
 #'   Elements corresponding to invalid molecules are returned as \code{NA}.
 #'
-#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
+#' @examplesIf .IsRdkitAvailable(initialize = FALSE)
 #'   # Calculate exact mass for a set of molecules
 #'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
 #'   CalculateExactMass(smiles)
@@ -180,7 +180,7 @@ CalculateExactMass <- function(mols,
 #'   A numeric vector containing the molecular weight for each molecule.
 #'   Elements corresponding to invalid molecules are returned as \code{NA}.
 #'
-#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
+#' @examplesIf .IsRdkitAvailable(initialize = FALSE)
 #'   # Calculate average molecular weight for a set of molecules
 #'   smiles <- c("CCO", "c1ccccc1", "invalid_molecule")
 #'   CalculateMolecularWeight(smiles)

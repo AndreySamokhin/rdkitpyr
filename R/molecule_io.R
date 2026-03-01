@@ -21,7 +21,7 @@
 #' @return
 #'   A list of RDKit Mol objects.
 #'
-#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
+#' @examplesIf .IsRdkitAvailable(initialize = FALSE)
 #'   # Convert a vector of SMILES to RDKit Mol objects
 #'   mols <- ParseMolecules(c("CC", "CCC"))
 #'   print(mols[[1L]])
@@ -94,7 +94,7 @@ ParseMolecules <- function(mols,
 #'   A character vector. SMILES strings. Elements that cannot be converted are
 #'   returned as \code{NA}.
 #'
-#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
+#' @examplesIf .IsRdkitAvailable(initialize = FALSE)
 #'   # Convert a vector of InChI identifiers to canonical SMILES
 #'   inchi <- c("InChI=1S/C2H6/c1-2/h1-2H3",
 #'              "InChI=1S/C6H6/c1-2-4-6-5-3-1/h1-6H")
@@ -205,7 +205,7 @@ ConvertToSmiles <- function(mols,
 #'   A character vector. InChI strings. Elements that cannot be converted are
 #'   returned as \code{NA}.
 #'
-#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
+#' @examplesIf .IsRdkitAvailable(initialize = FALSE)
 #'   # Convert a vector of SMILES to InChI identifiers
 #'   smiles <- c("CC", "CCC")
 #'   ConvertToInchi(smiles)
@@ -275,7 +275,7 @@ ConvertToInchi <- function(mols,
 #'   A character vector. InChIKey strings. Elements that cannot be converted are
 #'   returned as \code{NA}.
 #'
-#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
+#' @examplesIf .IsRdkitAvailable(initialize = FALSE)
 #'   # Convert a vector of InChI to InChIKey identifiers
 #'   inchi <- c("InChI=1S/C2H6/c1-2/h1-2H3",
 #'              "InChI=1S/C6H6/c1-2-4-6-5-3-1/h1-6H")

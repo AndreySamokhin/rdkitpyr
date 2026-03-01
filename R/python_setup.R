@@ -21,7 +21,7 @@
 #'     \code{py_require()}.}
 #'   }
 #'
-#' @examplesIf rdkitpyr:::.IsRdkitAvailable(initialize = FALSE)
+#' @examplesIf .IsRdkitAvailable(initialize = FALSE)
 #'   # Print information about the Python environment
 #'   GetPythonInfo()
 #'
