@@ -1,15 +1,16 @@
 Type: Package
 Package: rdkitpyr
-Title: Task-Oriented Cheminformatics in R Using the RDKit Python Interface
+Title: Task-Oriented Cheminformatics in R Using 'RDKit' via 'Python'
 Version: 0.2.0
 Authors@R: person("Andrey", "Samokhin",
                   email = "andrey.s.samokhin@gmail.com",
                   role = c("aut", "cre", "cph"),
                   comment = c(ORCID = "0000-0003-0223-6087"))
-Description: A task-oriented R interface to the RDKit Python library via
-    'reticulate'. The package provides high-level cheminformatics
-    functionality, including molecule parsing, descriptor calculation, and
-    fingerprint generation without mirroring RDKit's native API structure.
+Description: A task-oriented R interface to the 'RDKit' <https://www.rdkit.org>
+    library through its 'Python' API via 'reticulate'. The package offers
+    high-level cheminformatics functionality, including molecule parsing,
+    descriptor calculation, and fingerprint generation without replicating the 
+    native structure of 'RDKit'.
 License: MIT + file LICENSE
 URL: https://mass-spec.ru/projects/cheminformatics/rdkitpyr/eng/
 BugReports: https://github.com/AndreySamokhin/rdkitpyr/issues
