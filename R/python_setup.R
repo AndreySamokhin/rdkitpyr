@@ -58,11 +58,19 @@ GetPythonInfo <- function(verbose = TRUE) {
 #' Check whether RDKit is available
 #'
 #' @description
-#'   Internal helper used in examples and tests to determine whether the
-#'   Python module \code{rdkit} is available via \pkg{reticulate}.
+#'   Used in examples and tests to determine whether the Python module
+#'   \code{rdkit} is available via \pkg{reticulate}.
+#'
+#'   This function is exported to support examples and tests. It is not part of
+#'   the stable user-facing API and may change without notice.
 #'
 #'   The result is cached for the duration of the R session to avoid repeated
 #'   calls to \code{reticulate::py_module_available()}.
+#'
+#' @param initialize
+#'   A logical value. If \code{FALSE} and Python is not initialized, RDKit is
+#'   assumed to be unavailable and the corresponding tests and examples are
+#'   skipped.
 #'
 #' @return
 #'   A logical value indicating whether the \code{rdkit} Python module is
@@ -70,7 +78,8 @@ GetPythonInfo <- function(verbose = TRUE) {
 #'
 #' @importFrom reticulate py_available
 #' @importFrom reticulate py_module_available
-#' @noRd
+#'
+#' @export
 #==============================================================================#
 .IsRdkitAvailable <- function(initialize = TRUE) {
   if (!is.na(the$rdkit_available)) {
