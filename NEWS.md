@@ -1,6 +1,6 @@
 # rdkitpyr
 
-## rdkitpyr 0.2.0
+## rdkitpyr 0.2.1
 
 ### New features
 
