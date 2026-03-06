@@ -21,8 +21,7 @@
 #'     \code{py_require()}.}
 #'   }
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf .IsRdkitAvailable(initialize = FALSE)
 #'   # Print information about the Python environment
 #'   GetPythonInfo()
 #'
@@ -30,7 +29,6 @@
 #'   py_env <- GetPythonInfo(verbose = FALSE)
 #'   py_env$python_version
 #'   py_env$rdkit_version
-#' }
 #'
 #' @export
 #==============================================================================#
@@ -52,6 +50,46 @@ GetPythonInfo <- function(verbose = TRUE) {
             forced_by)
   }
   return(invisible(the$py_info))
+}
+
+
+
+#==============================================================================#
+#' Check whether RDKit is available
+#'
+#' @description
+#'   Used in examples and tests to determine whether the Python module
+#'   \code{rdkit} is available via \pkg{reticulate}.
+#'
+#'   This function is exported to support examples and tests. It is not part of
+#'   the stable user-facing API and may change without notice.
+#'
+#'   The result is cached for the duration of the R session to avoid repeated
+#'   calls to \code{reticulate::py_module_available()}.
+#'
+#' @param initialize
+#'   A logical value. If \code{FALSE} and Python is not initialized, RDKit is
+#'   assumed to be unavailable and the corresponding tests and examples are
+#'   skipped.
+#'
+#' @return
+#'   A logical value indicating whether the \code{rdkit} Python module is
+#'   available.
+#'
+#' @importFrom reticulate py_available
+#' @importFrom reticulate py_module_available
+#'
+#' @export
+#==============================================================================#
+.IsRdkitAvailable <- function(initialize = TRUE) {
+  if (!is.na(the$rdkit_available)) {
+    return(the$rdkit_available)
+  }
+  if (!initialize && !reticulate::py_available(initialize = FALSE)) {
+    return(FALSE)
+  }
+  the$rdkit_available <- reticulate::py_module_available("rdkit")
+  return(the$rdkit_available)
 }
 
 
@@ -139,14 +177,18 @@ GetPythonInfo <- function(verbose = TRUE) {
 
 
 #==============================================================================#
-#' Load Python helper scripts for the package
-#' @importFrom reticulate source_python
+#' Load Python module
+#' @importFrom reticulate py_run_string
+#' @importFrom reticulate import
 #' @noRd
 #==============================================================================#
-.LoadPythonHelpers <- function() {
-  path <- system.file("python", "molecule_io.py", package = "rdkitpyr")
-  normalized_path <- normalizePath(path, mustWork = TRUE)
-  reticulate::source_python(normalized_path, convert = FALSE)
+.LoadPythonModule <- function() {
+  # The 'insert(0, path)' has higher prioriy over 'append(path)', so it prevents
+  # conflicts and ensures that the module will be loaded.
+  py_module_path <- system.file("python", package = "rdkitpyr")
+  py_script <- sprintf("import sys; sys.path.insert(0, '%s')", py_module_path)
+  reticulate::py_run_string(py_script)
+  the$py_module <- reticulate::import("rdkitpyr", convert = FALSE)
   return(invisible(NULL))
 }
 
@@ -177,7 +219,7 @@ GetPythonInfo <- function(verbose = TRUE) {
   }
   .VerifyPythonVersion()
   .VerifyPythonPackageVersions()
-  .LoadPythonHelpers()
+  .LoadPythonModule()
   the$py_ready <- TRUE
   return(invisible(NULL))
 }

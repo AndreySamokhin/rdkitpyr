@@ -2,25 +2,29 @@
 % Please edit documentation in R/molecule_io.R
 \name{ConvertToInchikey}
 \alias{ConvertToInchikey}
-\title{Convert molecular representations to InChIKey strings}
+\title{Convert molecules to InChIKey strings}
 \usage{
-ConvertToInchikey(mols)
+ConvertToInchikey(mols, verbose = FALSE)
 }
 \arguments{
-\item{mols}{A character vector. Molecular representation, this can be SMILES or InChI
-strings. All elements must be of the same type.}
+\item{mols}{A character vector of SMILES or InChI strings, or a list of RDKit
+Mol objects.}
+
+\item{verbose}{A logical value. If \code{TRUE}, display warning and error messages emitted
+by the RDKit backend. Default is \code{FALSE}.}
 }
 \value{
 A character vector. InChIKey strings. Elements that cannot be converted are
   returned as \code{NA}.
 }
 \description{
-Convert molecular representations to InChIKey strings.
+Convert molecules to InChIKey strings.
 
-  The input must be a character vector of either SMILES or InChI identifiers;
-  mixing the two in the same vector is not allowed.
+  Conversion of an InChI string to an InChIKey relies on the IUPAC library,
+  allowing conversion without creating intermediate RDKit Mol objects.
 }
 \examples{
+\dontshow{if (.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Convert a vector of InChI to InChIKey identifiers
   inchi <- c("InChI=1S/C2H6/c1-2/h1-2H3",
              "InChI=1S/C6H6/c1-2-4-6-5-3-1/h1-6H")
@@ -33,6 +37,5 @@ Convert molecular representations to InChIKey strings.
   ConvertToInchikey(smiles)
   #> "OTMSDBZUPAUEDD-UHFFFAOYSA-N"
   #> "UHOVQNZJYSORNB-UHFFFAOYSA-N"
-
-
+\dontshow{\}) # examplesIf}
 }

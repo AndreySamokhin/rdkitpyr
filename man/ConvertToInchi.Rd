@@ -2,26 +2,30 @@
 % Please edit documentation in R/molecule_io.R
 \name{ConvertToInchi}
 \alias{ConvertToInchi}
-\title{Convert molecular representations to InChI strings}
+\title{Convert molecules to InChI strings}
 \usage{
-ConvertToInchi(mols)
+ConvertToInchi(mols, verbose = FALSE)
 }
 \arguments{
-\item{mols}{A character vector. Molecular representation, this can be SMILES or InChI
-strings. All elements must be of the same type.}
+\item{mols}{A character vector of SMILES or InChI strings, or a list of RDKit
+Mol objects.}
+
+\item{verbose}{A logical value. If \code{TRUE}, display warning and error messages emitted
+by the RDKit backend. Default is \code{FALSE}.}
 }
 \value{
 A character vector. InChI strings. Elements that cannot be converted are
   returned as \code{NA}.
 }
 \description{
-Convert molecular representations to InChI strings.
+Convert molecules to InChI strings.
 
   InChI identifiers can technically be provided as input. In this case, the
-  output is expected to be identical to the input. This can be useful to test
-  RDKit's consistency with challenging molecules.
+  output is expected to be identical to the input. This can be useful only to
+  test RDKit's consistency with challenging molecules.
 }
 \examples{
+\dontshow{if (.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Convert a vector of SMILES to InChI identifiers
   smiles <- c("CC", "CCC")
   ConvertToInchi(smiles)
@@ -31,6 +35,5 @@ Convert molecular representations to InChI strings.
   # Providing InChI as input returns identical output
   ConvertToInchi("InChI=1S/CH4/h1H4")
   #> "InChI=1S/CH4/h1H4"
-
-
+\dontshow{\}) # examplesIf}
 }

@@ -2,45 +2,47 @@
 % Please edit documentation in R/molecule_io.R
 \name{ConvertToSmiles}
 \alias{ConvertToSmiles}
-\title{Convert molecular representations to SMILES strings}
+\title{Convert molecules to SMILES strings}
 \usage{
 ConvertToSmiles(
   mols,
   isomeric = TRUE,
   kekule = FALSE,
+  canonical = TRUE,
   explicit_bonds = FALSE,
   explicit_hydrogens = FALSE,
-  canonical = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
-\item{mols}{A character vector. Molecular representation, this can be SMILES or InChI
-strings. All elements must be of the same type.}
+\item{mols}{A character vector of SMILES or InChI strings, or a list of RDKit
+Mol objects.}
 
 \item{isomeric}{A logical value. If \code{TRUE}, include stereochemistry in the output.}
 
 \item{kekule}{A logical value. If \code{TRUE}, kekulize aromatic bonds.}
 
+\item{canonical}{A logical value. If \code{TRUE}, generate canonical SMILES.}
+
 \item{explicit_bonds}{A logical value. If \code{TRUE}, make all bonds explicit.}
 
 \item{explicit_hydrogens}{A logical value. If \code{TRUE}, make all hydrogens explicit.}
 
-\item{canonical}{A logical value. If \code{TRUE}, generate canonical SMILES.}
+\item{verbose}{A logical value. If \code{TRUE}, display warning and error messages emitted
+by the RDKit backend. Default is \code{FALSE}.}
 }
 \value{
 A character vector. SMILES strings. Elements that cannot be converted are
   returned as \code{NA}.
 }
 \description{
-Convert molecular representations to SMILES strings.
+Convert molecules to SMILES strings.
 
-  The input must be a character vector of either SMILES or InChI identifiers;
-  mixing the two in the same vector is not allowed.
-
-  SMILES inputs can also be used to transform their representation, for
-  example, to canonical SMILES or to include stereochemistry.
+  SMILES strings can be provided as input to obtain their canonical form or
+  to remove stereochemistry.
 }
 \examples{
+\dontshow{if (.IsRdkitAvailable(initialize = FALSE)) withAutoprint(\{ # examplesIf}
   # Convert a vector of InChI identifiers to canonical SMILES
   inchi <- c("InChI=1S/C2H6/c1-2/h1-2H3",
              "InChI=1S/C6H6/c1-2-4-6-5-3-1/h1-6H")
@@ -53,5 +55,5 @@ Convert molecular representations to SMILES strings.
   ConvertToSmiles(smiles, kekule = TRUE)
   #> "C1=CC=CC=C1"
   #> "C1=CC=C2C=CC=CC2=C1"
-
+\dontshow{\}) # examplesIf}
 }
